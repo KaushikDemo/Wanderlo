@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wanderlo - UPI Payment Gateway</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
+                        url('https://images.unsplash.com/photo-1469474968028-56623f02e42e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80');
+            background-size: cover;
+            background-position: center;
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .payment-container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 480px;
+            margin: 0 auto;
+            overflow: hidden;
+            position: relative;
+            backdrop-filter: blur(10px);
+        }
+        
+        .payment-header {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 25px;
+            text-align: center;
+            position: relative;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .payment-header h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+            font-weight: 700;
+            color: #FF9E44;
+        }
+        
+        .payment-header p {
+            opacity: 0.9;
+            font-size: 16px;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #FF9E44;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .logo-icon {
+            font-size: 28px;
+        }
+        
+        .secure-notice {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        
+        .payment-body {
+            padding: 30px;
+        }
+        
+        .payment-info {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+            border-left: 4px solid #FF9E44;
+        }
+        
+        .payment-detail {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+        
+        .payment-detail:last-child {
+            margin-bottom: 0;
+        }
+        
+        .payment-detail .label {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .payment-detail .value {
+            font-weight: 600;
+        }
+        
+        .amount {
+            font-size: 24px;
+            color: #FF9E44;
+            font-weight: 700;
+        }
+        
+        .payment-method {
+            margin-bottom: 25px;
+        }
+        
+        .payment-method h3 {
+            margin-bottom: 18px;
+            color: #FF9E44;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .method-options {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .method-option {
+            flex: 1;
+            text-align: center;
+            padding: 15px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: rgba(0, 0, 0, 0.2);
+        }
+        
+        .method-option:hover {
+            border-color: #FF9E44;
+            transform: translateY(-3px);
+        }
+        
+        .method-option.selected {
+            border-color: #FF9E44;
+            background: rgba(255, 158, 68, 0.1);
+            box-shadow: 0 5px 15px rgba(255, 158, 68, 0.2);
+        }
+        
+        .method-icon {
+            font-size: 32px;
+            margin-bottom: 10px;
+            color: #FF9E44;
+        }
+        
+        .method-option h4 {
+            margin-bottom: 5px;
+            color: #fff;
+        }
+        
+        .method-option p {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .payment-section {
+            display: none; /* All sections hidden by default */
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .qr-code {
+            width: 220px;
+            height: 220px;
+            margin: 20px auto;
+            background: linear-gradient(45deg, rgba(255, 255, 255, 0.1) 25%, transparent 25%), 
+                        linear-gradient(-45deg, rgba(255, 255, 255, 0.1) 25%, transparent 25%), 
+                        linear-gradient(45deg, transparent 75%, rgba(255, 255, 255, 0.1) 75%), 
+                        linear-gradient(-45deg, transparent 75%, rgba(255, 255, 255, 0.1) 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+        
+        .qr-center {
+            width: 60px;
+            height: 60px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            color: #FF9E44;
+            z-index: 2;
+        }
+        
+        .qr-pattern {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.3) 2px, transparent 2px),
+                radial-gradient(circle at 70% 70%, rgba(255, 255, 255, 0.3) 2px, transparent 2px);
+            background-size: 20px 20px;
+            opacity: 0.7;
+        }
+        
+        .timer {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.7);
+            margin: 20px 0;
+            font-weight: 600;
+        }
+        
+        .timer span {
+            color: #FF9E44;
+            font-weight: 700;
+        }
+        
+        .upi-input-container {
+            margin: 25px 0;
+        }
+        
+        .upi-input-container label {
+            display: block;
+            text-align: left;
+            margin-bottom: 8px;
+            color: #fff;
+            font-weight: 600;
+        }
+        
+        .upi-input {
+            width: 100%;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+            color: white;
+        }
+        
+        .upi-input:focus {
+            outline: none;
+            border-color: #FF9E44;
+            box-shadow: 0 0 0 3px rgba(255, 158, 68, 0.2);
+        }
+        
+        .upi-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* New Coupon Styles */
+        .order-summary {
+            background: rgba(0,0,0,0.2);
+            padding: 20px;
+            border-radius: 8px;
+        }
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        .summary-row.total {
+            font-weight: bold;
+            font-size: 18px;
+            color: #FF9E44;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255,255,255,0.2);
+        }
+        #applyCouponBtn:hover {
+            background: #ff8c21;
+        }
+        .status-success { color: #4CAF50; }
+        .status-error { color: #FF6B6B; }
+        
+        .action-button {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(45deg, #FF9E44, #FF6B6B);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .action-button:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            letter-spacing: 1px;
+        }
+        
+        .action-button:active {
+            transform: translateY(0);
+        }
+        
+        .action-button::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%);
+            transform-origin: 50% 50%;
+        }
+        
+        .action-button:focus:not(:active)::after {
+            animation: ripple 1s ease-out;
+        }
+        
+        @keyframes ripple {
+            0% {
+                transform: scale(0, 0);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(30, 30);
+                opacity: 0;
+            }
+        }
+        
+        .back-button {
+            width: 100%;
+            padding: 14px;
+            background-color: rgba(0, 0, 0, 0.2);
+            color: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+        
+        .back-button:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .spinner {
+            border: 5px solid rgba(255, 255, 255, 0.2);
+            border-top: 5px solid #FF9E44;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1.5s linear infinite;
+            margin: 0 auto 25px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .processing-section h3 {
+            margin-bottom: 15px;
+            color: #fff;
+        }
+        
+        .processing-section p {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 10px;
+        }
+        
+        .success-icon {
+            width: 90px;
+            height: 90px;
+            background: linear-gradient(45deg, #FF9E44, #FF6B6B);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 25px;
+            color: white;
+            font-size: 45px;
+            box-shadow: 0 5px 15px rgba(255, 158, 68, 0.3);
+            animation: pulse 2s infinite;
+        }
+        
+        .success-section h2 {
+            color: #FF9E44;
+            margin-bottom: 15px;
+            font-size: 28px;
+        }
+        
+        .success-section p {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 25px;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+        
+        .transaction-details {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 25px;
+            text-align: left;
+            border-left: 4px solid #FF9E44;
+        }
+        
+        .transaction-details h3 {
+            margin-bottom: 15px;
+            color: #fff;
+            font-size: 18px;
+        }
+        
+        .transaction-details p {
+            margin-bottom: 8px;
+            font-size: 15px;
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 8px;
+        }
+        
+        .transaction-details p:last-child {
+            border-bottom: none;
+        }
+        
+        .transaction-details .label {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .transaction-details .value {
+            font-weight: 600;
+            color: #fff;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 13px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.2);
+        }
+        
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            margin: 25px 0;
+            position: relative;
+        }
+        
+        .step {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 15px;
+            font-weight: bold;
+            color: rgba(255, 255, 255, 0.7);
+            z-index: 2;
+            transition: all 0.4s ease;
+        }
+        
+        .step.active {
+            background: linear-gradient(45deg, #FF9E44, #FF6B6B);
+            color: white;
+            box-shadow: 0 3px 10px rgba(255, 158, 68, 0.3);
+            transform: scale(1.1);
+        }
+        
+        .step.completed {
+            background: linear-gradient(45deg, #FF9E44, #FF6B6B);
+            color: white;
+        }
+        
+        .step-line {
+            height: 3px;
+            background-color: rgba(255, 255, 255, 0.2);
+            position: absolute;
+            top: 16px;
+            left: 50px;
+            right: 50px;
+            z-index: 1;
+        }
+
+        .auto-redirect-notice {
+            background-color: rgba(255, 158, 68, 0.1);
+            border: 1px solid rgba(255, 158, 68, 0.3);
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #FF9E44;
+            text-align: center;
+        }
+        
+        /* Floating Elements */
+        .floating-element {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 158, 68, 0.1);
+            animation: float 6s ease-in-out infinite;
+            z-index: -1;
+        }
+        
+        .float-1 {
+            width: 80px; height: 80px; top: 15%; left: 5%; animation-delay: 0s;
+        }
+        
+        .float-2 {
+            width: 50px; height: 50px; top: 65%; right: 10%; animation-delay: 1s;
+        }
+        
+        .float-3 {
+            width: 70px; height: 70px; bottom: 10%; left: 15%; animation-delay: 2s;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(10deg); }
+            100% { transform: translateY(0) rotate(0deg); }
+        }
+        
+        /* Confetti Animation */
+        @keyframes confettiFall {
+            0% {
+                opacity: 1;
+                transform: translateY(0) rotate(0deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(100vh) rotate(720deg);
+            }
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .method-options {
+                flex-direction: column;
+            }
+            .payment-body {
+                padding: 20px;
+            }
+            .payment-header {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-element float-1"></div>
+    <div class="floating-element float-2"></div>
+    <div class="floating-element float-3"></div>
+    
+    <div class="payment-container">
+        <div class="payment-header">
+            <div class="logo">
+                <i class="fas fa-compass logo-icon"></i>Wanderlo Payments
+            </div>
+            <h1>Secure Payment Gateway</h1>
+            <p>Complete your transaction safely</p>
+            <div class="secure-notice">
+                <span><i class="fas fa-lock"></i></span> 
+                <span>Your payment information is secure and encrypted</span>
+            </div>
+        </div>
+        
+        <div class="step-indicator">
+            <div class="step" id="step1">1</div>
+            <div class="step" id="step2">2</div>
+            <div class="step" id="step3">3</div>
+            <div class="step-line"></div>
+        </div>
+        
+        <div class="payment-body">
+            <div class="payment-section" id="methodSelectionSection">
+                <div class="payment-info">
+                    <div class="payment-detail">
+                        <span class="label">Order ID:</span>
+                        <span class="value">WANDERLO#2023UPI001</span>
+                    </div>
+                    <div class="payment-detail">
+                        <span class="label">Description:</span>
+                        <span class="value">Adventure Package Booking</span>
+                    </div>
+                    <div class="payment-detail">
+                        <span class="label">Amount:</span>
+                        <span class="value amount">₹2,499.00</span>
+                    </div>
+                </div>
+
+                <div class="order-summary" style="margin-bottom: 25px;">
+                    <div class="summary-row">
+                        <span>Subtotal:</span>
+                        <span id="subtotalAmount">₹2,499.00</span>
+                    </div>
+                    <div class="summary-row" id="discountRow" style="display: none;">
+                        <span>Discount:</span>
+                        <span id="discountAmount" class="status-success"></span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>Total:</span>
+                        <span id="totalAmount">₹2,499.00</span>
+                    </div>
+                </div>
+                <div class="coupon-group" style="display: flex; gap: 10px; margin-bottom: 25px;">
+                    <input type="text" class="upi-input" id="couponCode" placeholder="Enter coupon code">
+                    <button type="button" id="applyCouponBtn" style="padding: 15px 20px; background: #FF9E44; border: none; color: white; border-radius: 10px; cursor: pointer; font-weight: 600; transition: background 0.3s;">Apply</button>
+                </div>
+                <div id="couponStatus" style="margin-top: -15px; margin-bottom: 20px; text-align: center; font-weight: 600;"></div>
+                
+                <div class="payment-method">
+                    <h3><i class="fas fa-mobile-alt"></i> Select Payment Method</h3>
+                    <div class="method-options">
+                        <div class="method-option selected" id="qrOption">
+                            <div class="method-icon"><i class="fas fa-qrcode"></i></div>
+                            <h4>Scan QR Code</h4>
+                            <p>Quick and secure</p>
+                        </div>
+                        <div class="method-option" id="upiOption">
+                            <div class="method-icon"><i class="fas fa-id-card"></i></div>
+                            <h4>UPI ID</h4>
+                            <p>Enter your UPI ID</p>
+                        </div>
+                    </div>
+                </div>
+                <button class="action-button" id="continueBtn">
+                    <span><i class="fas fa-arrow-right"></i></span> Continue to Payment
+                </button>
+            </div>
+
+            <div class="payment-section" id="qrSection">
+                <h3><i class="fas fa-qrcode"></i> Scan QR Code to Pay</h3>
+                <p>Open your UPI app and scan the code below</p>
+                <div class="qr-code">
+                    <div class="qr-pattern"></div>
+                    <div class="qr-center">UPI</div>
+                </div>
+                <div class="timer">Processing in: <span id="qrTimer">10</span> seconds</div>
+                <div class="auto-redirect-notice">
+                    We will automatically check for payment after 10 seconds.
+                </div>
+                <button class="action-button" id="manualProceedBtn">
+                    <span><i class="fas fa-check-circle"></i></span> I Have Paid
+                </button>
+                <button class="back-button" id="qrBackBtn">Back</button>
+            </div>
+            
+            <div class="payment-section" id="upiIdSection">
+                <h3><i class="fas fa-id-card"></i> Pay via UPI ID</h3>
+                <p>Enter your UPI ID to receive a payment request</p>
+                <div class="upi-input-container">
+                    <label for="upiIdInput">Your UPI ID</label>
+                    <input type="text" class="upi-input" id="upiIdInput" placeholder="e.g. yourname@upi">
+                </div>
+                <div class="timer">Submitting in: <span id="upiTimer">10</span> seconds</div>
+                <button class="action-button" id="submitUpiBtn">
+                    <span><i class="fas fa-lock"></i></span> Submit & Pay
+                </button>
+                <button class="back-button" id="upiBackBtn">Back</button>
+            </div>
+
+            <div class="payment-section" id="processingSection">
+                <div class="spinner"></div>
+                <h3>Processing Your Payment</h3>
+                <p>Please wait while we verify your transaction.</p>
+                <p>Do not close this window.</p>
+            </div>
+            
+            <div class="payment-section" id="successSection">
+                <div class="success-icon"><i class="fas fa-check"></i></div>
+                <h2>Payment Successful!</h2>
+                <p>Thank you for your payment. Your booking has been confirmed.</p>
+                <div class="transaction-details">
+                    <h3>Transaction Details</h3>
+                    <p>
+                        <span class="label">Transaction ID:</span>
+                        <span class="value" id="transactionId"></span>
+                    </p>
+                    <p>
+                        <span class="label">Reference No:</span>
+                        <span class="value" id="referenceNo"></span>
+                    </p>
+                    <p>
+                        <span class="label">Amount Paid:</span>
+                        <span class="value" id="finalAmountPaid">₹2,499.00</span>
+                    </p>
+                    <p>
+                        <span class="label">Date & Time:</span>
+                        <span class="value" id="transactionTime"></span>
+                    </p>
+                </div>
+                <button class="action-button" id="newPaymentBtn">
+                    <span><i class="fas fa-redo"></i></span> Make Another Payment
+                </button>
+            </div>
+        </div>
+        
+        <div class="footer">
+            This is a demo payment gateway for testing purposes only. No real transaction will occur.
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Section Elements
+            const sections = document.querySelectorAll('.payment-section');
+            const methodSelectionSection = document.getElementById('methodSelectionSection');
+            const qrSection = document.getElementById('qrSection');
+            const upiIdSection = document.getElementById('upiIdSection');
+            const processingSection = document.getElementById('processingSection');
+            const successSection = document.getElementById('successSection');
+
+            // Button Elements
+            const qrOption = document.getElementById('qrOption');
+            const upiOption = document.getElementById('upiOption');
+            const continueBtn = document.getElementById('continueBtn');
+            const manualProceedBtn = document.getElementById('manualProceedBtn');
+            const submitUpiBtn = document.getElementById('submitUpiBtn');
+            const qrBackBtn = document.getElementById('qrBackBtn');
+            const upiBackBtn = document.getElementById('upiBackBtn');
+            const newPaymentBtn = document.getElementById('newPaymentBtn');
+
+            // Timer Elements
+            const qrTimerSpan = document.getElementById('qrTimer');
+            const upiTimerSpan = document.getElementById('upiTimer');
+
+            // Step Indicator Elements
+            const steps = [document.getElementById('step1'), document.getElementById('step2'), document.getElementById('step3')];
+
+            // Transaction Details
+            const transactionIdSpan = document.getElementById('transactionId');
+            const referenceNoSpan = document.getElementById('referenceNo');
+            const transactionTimeSpan = document.getElementById('transactionTime');
+            
+            // Coupon and Price elements
+            const applyCouponBtn = document.getElementById('applyCouponBtn');
+            const couponCodeInput = document.getElementById('couponCode');
+            const couponStatus = document.getElementById('couponStatus');
+            const discountRow = document.getElementById('discountRow');
+            const discountAmountSpan = document.getElementById('discountAmount');
+            const totalAmountSpan = document.getElementById('totalAmount');
+            const subtotalAmountSpan = document.getElementById('subtotalAmount');
+            const finalAmountPaidSpan = document.getElementById('finalAmountPaid');
+            const originalAmountSpan = document.querySelector('#methodSelectionSection .amount');
+
+
+            // State Variables
+            let selectedMethod = 'qr';
+            let countdownInterval;
+            let basePrice = 2499.00; // Default price if none is passed
+            let currentPrice = basePrice;
+
+            // --- Get Amount from URL ---
+            const urlParams = new URLSearchParams(window.location.search);
+            const amountFromUrl = urlParams.get('amount');
+
+            if (amountFromUrl && !isNaN(parseFloat(amountFromUrl))) {
+                basePrice = parseFloat(amountFromUrl);
+                currentPrice = basePrice;
+            }
+            // --- End of New Logic ---
+
+            // --- Core Functions ---
+            
+            // Helper to format currency for India (INR)
+            const formatCurrency = (amount) => {
+                return new Intl.NumberFormat('en-IN', {
+                    style: 'currency',
+                    currency: 'INR',
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                }).format(amount);
+            };
+
+            const updatePriceDisplay = () => {
+                subtotalAmountSpan.textContent = formatCurrency(basePrice);
+                totalAmountSpan.textContent = formatCurrency(currentPrice);
+                originalAmountSpan.textContent = formatCurrency(currentPrice);
+                finalAmountPaidSpan.textContent = formatCurrency(currentPrice);
+            };
+
+            const showSection = (sectionToShow) => {
+                sections.forEach(sec => sec.style.display = 'none');
+                sectionToShow.style.display = 'block';
+            };
+
+            const updateSteps = (currentStepIndex) => {
+                steps.forEach((step, index) => {
+                    step.classList.remove('active', 'completed');
+                    if (index < currentStepIndex) {
+                        step.classList.add('completed');
+                    } else if (index === currentStepIndex) {
+                        step.classList.add('active');
+                    }
+                });
+            };
+
+            const startTimer = (duration, display, onComplete) => {
+                clearInterval(countdownInterval);
+                let timer = duration;
+                display.textContent = timer;
+
+                countdownInterval = setInterval(() => {
+                    timer--;
+                    display.textContent = timer;
+                    if (timer <= 0) {
+                        clearInterval(countdownInterval);
+                        onComplete();
+                    }
+                }, 1000);
+            };
+
+            const processPayment = () => {
+                clearInterval(countdownInterval);
+                showSection(processingSection);
+                updateSteps(2);
+
+                setTimeout(() => {
+                    // Update final amount paid on success screen
+                    finalAmountPaidSpan.textContent = formatCurrency(currentPrice);
+
+                    // Generate random transaction details
+                    transactionIdSpan.textContent = 'WANDERLO-TXN-' + Math.random().toString(36).substring(2, 10).toUpperCase();
+                    referenceNoSpan.textContent = 'REF' + Math.random().toString(36).substring(2, 10).toUpperCase();
+                    transactionTimeSpan.textContent = new Date().toLocaleString();
+
+                    showSection(successSection);
+                    steps.forEach(step => step.classList.add('completed')); // All steps completed
+                    createConfetti();
+                }, 3000);
+            };
+
+            const resetState = () => {
+                clearInterval(countdownInterval);
+                document.getElementById('upiIdInput').value = '';
+                selectedMethod = 'qr';
+                qrOption.classList.add('selected');
+                upiOption.classList.remove('selected');
+                
+                // Reset coupon and price
+                currentPrice = basePrice;
+                couponCodeInput.value = '';
+                couponStatus.textContent = '';
+                couponStatus.className = '';
+                discountRow.style.display = 'none';
+                updatePriceDisplay();
+
+                showSection(methodSelectionSection);
+                updateSteps(0);
+            };
+            
+            // --- Event Listeners ---
+
+            qrOption.addEventListener('click', () => {
+                selectedMethod = 'qr';
+                qrOption.classList.add('selected');
+                upiOption.classList.remove('selected');
+            });
+
+            upiOption.addEventListener('click', () => {
+                selectedMethod = 'upi';
+                upiOption.classList.add('selected');
+                qrOption.classList.remove('selected');
+            });
+
+            // Coupon Logic
+            applyCouponBtn.addEventListener('click', () => {
+                const code = couponCodeInput.value.trim().toLowerCase();
+                let discountPercent = 0;
+                
+                couponStatus.textContent = '';
+                couponStatus.className = '';
+                couponStatus.style.color = '';
+
+                switch (code) {
+                    case 'first10':
+                        discountPercent = 10;
+                        break;
+                    case 'icici':
+                        discountPercent = 5;
+                        break;
+                    default:
+                        if (code) {
+                            couponStatus.textContent = 'Invalid coupon code.';
+                            couponStatus.classList.add('status-error');
+                            couponStatus.style.color = '#FF6B6B';
+                        }
+                        currentPrice = basePrice;
+                        discountRow.style.display = 'none';
+                        updatePriceDisplay();
+                        return;
+                }
+
+                const discountValue = basePrice * (discountPercent / 100);
+                currentPrice = basePrice - discountValue;
+
+                discountAmountSpan.textContent = `- ${formatCurrency(discountValue)}`;
+                discountRow.style.display = 'flex';
+                
+                couponStatus.textContent = `Success! ${discountPercent}% discount applied.`;
+                couponStatus.classList.add('status-success');
+                couponStatus.style.color = '#4CAF50';
+
+                updatePriceDisplay();
+            });
+
+
+            continueBtn.addEventListener('click', () => {
+                updateSteps(1);
+                if (selectedMethod === 'qr') {
+                    showSection(qrSection);
+                    startTimer(10, qrTimerSpan, processPayment);
+                } else {
+                    showSection(upiIdSection);
+                    startTimer(10, upiTimerSpan, processPayment);
+                }
+            });
+
+            manualProceedBtn.addEventListener('click', processPayment);
+            
+            submitUpiBtn.addEventListener('click', () => {
+                if (document.getElementById('upiIdInput').value.trim() === '') {
+                    alert('Please enter a valid UPI ID.');
+                    return;
+                }
+                processPayment();
+            });
+
+            qrBackBtn.addEventListener('click', resetState);
+            upiBackBtn.addEventListener('click', resetState);
+            newPaymentBtn.addEventListener('click', resetState);
+
+            // --- Confetti Effect ---
+            const createConfetti = () => {
+                const colors = ['#FF9E44', '#FF6B6B', '#4CAF50', '#2196F3', '#9C27B0'];
+                for (let i = 0; i < 100; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.style.position = 'absolute';
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.top = Math.random() * -100 + 'px';
+                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.animation = `confettiFall ${Math.random() * 3 + 2}s linear forwards`;
+                    confetti.style.width = Math.random() * 10 + 5 + 'px';
+                    confetti.style.height = Math.random() * 10 + 5 + 'px';
+                    confetti.style.borderRadius = '50%';
+                    confetti.style.zIndex = '9999';
+                    document.body.appendChild(confetti);
+                    setTimeout(() => confetti.remove(), 5000);
+                }
+            };
+
+            // Initialize the page
+            resetState();
+        });
+    </script>
+</body>
+</html>

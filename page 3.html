@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wanderlo - Choose Your Destination</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+        url('https://images.unsplash.com/photo-1469474968028-56623f02e42e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: #fff;
+    min-height: 100vh;
+    padding: 20px;
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* --- HEADER STYLES --- */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+    animation: fadeIn 1.5s ease;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo {
+    font-size: 32px;
+    font-weight: 700;
+    color: #FF9E44;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.logo-icon {
+    margin-right: 8px;
+    font-size: 28px;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 30px;
+    padding: 8px 15px;
+    width: 300px;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+.search-bar:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.search-bar input {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #fff;
+    width: 100%;
+    padding: 5px;
+    font-size: 14px;
+}
+
+.search-bar i {
+    color: #fff;
+    margin-right: 8px;
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+    gap: 25px;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    position: relative;
+}
+
+.profile-section {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.login-btn {
+    background: #FF9E44;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 30px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.login-btn:hover {
+    background: #FF8A24;
+    transform: translateY(-2px);
+}
+
+/* --- DESTINATION PAGE STYLES --- */
+.destination-section {
+    text-align: center;
+    padding: 40px 0;
+    max-width: 1000px;
+    margin: 0 auto;
+    animation: fadeUp 1s ease;
+}
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.destination-section h1 {
+    font-size: 42px;
+    margin-bottom: 15px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+.destination-section p {
+    font-size: 18px;
+    margin-bottom: 40px;
+}
+
+.budget-filter {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border: 2px solid transparent;
+    padding: 10px 20px;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: background-color 0.5s ease, border-color 0.5s ease, transform 0.3s ease;
+}
+
+.filter-btn.active, .filter-btn:hover {
+    background: #FF9E44;
+    border-color: rgba(255, 255, 255, 0.8);
+    transform: translateY(-2px);
+}
+
+.destinations-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.destination-card {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 15px;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1), 
+                box-shadow 0.5s cubic-bezier(0.25, 0.8, 0.25, 1), 
+                border-color 0.5s ease;
+}
+
+.destination-card.selected, .destination-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    border-color: #FF9E44;
+}
+
+.destination-image {
+    /* MODIFIED: Changed height to aspect-ratio for 1:1 square images */
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+}
+
+.destination-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.7s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.destination-card:hover .destination-image img {
+    transform: scale(1.15);
+}
+
+.destination-content {
+    padding: 20px;
+    text-align: left;
+}
+
+.destination-content h3 {
+    font-size: 20px;
+    color: #FF9E44;
+    margin-bottom: 10px;
+}
+.destination-content p {
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 15px;
+    opacity: 0.8;
+}
+
+.destination-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+}
+
+.destination-price {
+    font-weight: bold;
+    color: #FF9E44;
+    font-size: 18px;
+}
+
+.destination-rating {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.destination-rating i {
+    color: #FFD700;
+}
+
+.select-btn {
+    background: #FF9E44;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 30px;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 15px;
+    transition: background-color 0.3s ease;
+}
+
+.select-btn:hover {
+    background: #FF8A24;
+}
+
+.toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #2c2c2c;
+    color: #fff;
+    padding: 15px 25px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transform: translateY(120px);
+    opacity: 0;
+    transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    z-index: 1000;
+    border-left: 5px solid #4CAF50;
+}
+
+.toast.error {
+    border-left: 5px solid #f44336;
+}
+
+.toast.show {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.nav-buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+.nav-btn {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    padding: 15px 30px;
+    border-radius: 30px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.nav-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-3px);
+}
+</style>
+</head>
+<body>
+
+<div class="toast" id="toast">
+    <i id="toast-icon" class="fas fa-check-circle"></i>
+    <span id="toast-message">Destination selected!</span>
+</div>
+
+<div class="container">
+    <header>
+        <div class="logo-container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-map-marked-alt logo-icon"></i>Wanderlo
+            </a>
+        </div>
+        <div class="search-bar">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="Search for destinations...">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html">About</a></li>
+                <li><a href="index.html">Contact</a></li>
+            </ul>
+        </nav>
+        <div class="profile-section">
+            <button class="login-btn" id="loginBtn">
+                <i class="fas fa-sign-in-alt"></i> Log In
+            </button>
+        </div>
+    </header>
+
+    <section class="destination-section">
+        <h1>Choose Your Destination</h1>
+        <p>Select from these amazing destinations that match your travel style and budget.</p>
+
+        <div class="budget-filter">
+            <button class="filter-btn active" data-filter="all">All Destinations</button>
+            <button class="filter-btn" data-filter="budget">Budget (&lt; ₹3000)</button>
+            <button class="filter-btn" data-filter="mid-range">Mid-Range (₹3000-₹4000)</button>
+            <button class="filter-btn" data-filter="premium">Premium (&gt; ₹4000)</button>
+        </div>
+
+        <div class="destinations-container" id="destinations-container"></div>
+
+        <div class="nav-buttons">
+            <button class="nav-btn" onclick="window.history.back();">
+                <i class="fas fa-arrow-left"></i> Back
+            </button>
+        </div>
+    </section>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    
+    function showToast(message, type = 'success') {
+        const toast = document.getElementById('toast');
+        const toastIcon = document.getElementById('toast-icon');
+        toast.className = 'toast show';
+        toast.querySelector('#toast-message').textContent = message;
+
+        if (type === 'error') {
+            toast.classList.add('error');
+            toastIcon.className = 'fas fa-exclamation-circle';
+        } else {
+            toastIcon.className = 'fas fa-check-circle';
+        }
+
+        setTimeout(() => {
+            toast.classList.remove('show');
+        }, 3000);
+    }
+
+    // --- MODIFIED: Changed all image extensions from .jpg to .png ---
+    const destinations = [
+        { name: 'Varanasi, Uttar Pradesh', desc: 'Spiritual city on Ganga with ghats, rituals, old alleys.', price: 2650, rating: '4.7/5', image: 'image/varanasi.png', category: 'budget' },
+        { name: 'Goa (North & South)', desc: 'Beaches, party life, Portuguese architecture, seafood fun.', price: 3000, rating: '4.5/5', image: 'image/goa.png', category: 'mid-range' },
+        { name: 'Tawang, Arunachal Pradesh', desc: 'High altitude, Buddhist monasteries, dramatic mountain views.', price: 4150, rating: '4.8/5', image: 'image/tawang.png', category: 'premium' },
+        { name: 'Kaziranga National Park, Assam', desc: 'One-horned rhino safaris, wetlands, wild India vibes.', price: 3750, rating: '4.7/5', image: 'image/kaziranga.png', category: 'mid-range' },
+        { name: 'Leh & Ladakh', desc: 'Moon landscapes, high passes, Buddhist gompas.', price: 4500, rating: '4.9/5', image: 'image/leh-ladakh.png', category: 'premium' },
+        { name: 'Kashmir (Srinagar, Gulmarg, Pahalgam)', desc: 'Lakes, gardens, snow, houseboats.', price: 4150, rating: '4.8/5', image: 'image/kashmir.png', category: 'premium' },
+        { name: 'Jodhpur, Rajasthan', desc: 'The “Blue City,” Mehrangarh Fort, old bazaars.', price: 2650, rating: '4.6/5', image: 'image/jodhpur.png', category: 'budget' },
+        { name: 'Hampi, Karnataka', desc: 'Ancient ruins, giant boulders, temple complexes.', price: 2400, rating: '4.7/5', image: 'image/hampi.png', category: 'budget' },
+        { name: 'McLeod Ganj / Dharamsala, HP', desc: 'Tibetan culture, hills, mindfulness, trekking.', price: 2850, rating: '4.7/5', image: 'image/mcleod-ganj.png', category: 'budget' },
+        { name: 'Manali, Himachal Pradesh', desc: 'Snow, adventure sports, mountain air.', price: 3150, rating: '4.5/5', image: 'image/manali.png', category: 'mid-range' },
+        { name: 'Shimla, Himachal Pradesh', desc: 'Colonial hill station, mall road, forest walks.', price: 2650, rating: '4.4/5', image: 'image/shimla.png', category: 'budget' },
+        { name: 'Rann of Kutch, Gujarat', desc: 'Salt desert, white landscapes, cultural fairs.', price: 3000, rating: '4.6/5', image: 'image/rann-of-kutch.png', category: 'mid-range' },
+        { name: 'Pushkar, Rajasthan', desc: 'Holy lake, temples, camel fair, laidback vibes.', price: 2400, rating: '4.5/5', image: 'image/pushkar.png', category: 'budget' },
+        { name: 'Valley of Flowers, Uttarakhand', desc: 'Alpine meadows, trek paradise, wildflowers.', price: 3400, rating: '4.8/5', image: 'image/valley-of-flowers.png', category: 'mid-range' },
+        { name: 'Udaipur, Rajasthan', desc: 'City of Lakes with royal palaces.', price: 3000, rating: '4.7/5', image: 'image/udaipur.png', category: 'mid-range' },
+        { name: 'Kodaikanal, Tamil Nadu', desc: 'Lakes, hills, forest trails.', price: 2700, rating: '4.4/5', image: 'image/kodaikanal.png', category: 'budget' },
+        { name: 'Rishikesh, Uttarakhand', desc: 'Yoga capital with Ganga aarti and rafting.', price: 2650, rating: '4.7/5', image: 'image/rishikesh.png', category: 'budget' },
+        { name: 'Shillong, Meghalaya', desc: 'Lush hills, living root bridges, and waterfalls.', price: 3000, rating: '4.8/5', image: 'image/shillong.png', category: 'mid-range' },
+        { name: 'Andaman Islands', desc: 'Pristine beaches and coral reefs.', price: 3750, rating: '4.9/5', image: 'image/andaman-islands.png', category: 'mid-range' },
+        { name: 'Jaisalmer, Rajasthan', desc: 'Living fort with desert views.', price: 2400, rating: '4.6/5', image: 'image/jaisalmer.png', category: 'budget' }
+    ];
+
+    const container = document.getElementById('destinations-container');
+    const filterButtons = document.querySelectorAll('.filter-btn');
+
+    const renderCards = (filter = 'all') => {
+        container.innerHTML = '';
+        const filteredDestinations = destinations.filter(d => filter === 'all' || d.category === filter);
+
+        filteredDestinations.forEach(dest => {
+            const card = document.createElement('div');
+            card.className = 'destination-card';
+            card.dataset.name = dest.name;
+            card.dataset.price = dest.price;
+            card.dataset.desc = dest.desc;
+            card.dataset.image = dest.image;
+
+            card.innerHTML = `
+                <div class="destination-image">
+                    <img src="${dest.image}" alt="${dest.name}" onerror="this.src='https://placehold.co/600x400/222/FFF?text=Image+Not+Found';">
+                </div>
+                <div class="destination-content">
+                    <h3>${dest.name}</h3>
+                    <p>${dest.desc}</p>
+                    <div class="destination-meta">
+                        <div class="destination-price">₹${dest.price.toLocaleString('en-IN')}/day</div>
+                        <div class="destination-rating"><i class="fas fa-star"></i> ${dest.rating}</div>
+                    </div>
+                    <button class="select-btn">Select & Proceed</button>
+                </div>`;
+            container.appendChild(card);
+        });
+    };
+
+    filterButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+            renderCards(this.dataset.filter);
+        });
+    });
+
+    container.addEventListener('click', function(e) {
+        if (e.target.classList.contains('select-btn')) {
+            const card = e.target.closest('.destination-card');
+            
+            document.querySelectorAll('.destination-card').forEach(c => c.classList.remove('selected'));
+            card.classList.add('selected');
+
+            const selectedDestinationData = {
+                name: card.dataset.name,
+                price: parseInt(card.dataset.price, 10),
+                image: card.dataset.image,
+                desc: card.dataset.desc
+            };
+
+            localStorage.setItem('selectedDestination', JSON.stringify(selectedDestinationData));
+            
+            showToast(`Proceeding with '${selectedDestinationData.name}'...`, 'success');
+            
+            setTimeout(() => {
+                window.location.href = 'page 4.html';
+            }, 1500);
+        }
+    });
+    
+    // Initial render
+    renderCards();
+});
+</script>
+</body>
+</html>

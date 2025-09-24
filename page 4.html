@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wanderlo - Select Your Guide</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
+                        url('https://images.unsplash.com/photo-1469474968028-56623f02e42e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80');
+            background-size: cover;
+            background-position: center;
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* Header */
+        header { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; }
+        .logo { font-size: 32px; font-weight: 700; color: #FF9E44; text-decoration: none; display: flex; align-items: center; }
+        .logo-icon { margin-right: 8px; }
+        nav ul { display: flex; list-style: none; gap: 25px; }
+        nav ul li a { color: #fff; text-decoration: none; font-weight: 500; position: relative; }
+        nav ul li a:hover, nav ul li a.highlight { color: #FF9E44; }
+        .login-btn { background: #FF9E44; color: white; border: none; padding: 10px 20px; border-radius: 30px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; }
+        .login-btn:hover { background: #FF8A24; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(255, 158, 68, 0.4); }
+        
+        /* Guide Section */
+        .guide-section { text-align: center; padding: 40px 0; max-width: 1000px; margin: 0 auto; }
+        .guide-section h1 { font-size: 42px; margin-bottom: 15px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+        .destination-info { font-size: 22px; color: #FF9E44; margin-bottom: 30px; }
+        
+        /* --- START: MAP FILTER STYLES --- */
+        .map-container { 
+            height: 450px; 
+            border-radius: 15px; 
+            overflow: hidden; 
+            margin: 30px 0; 
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3); 
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            position: relative; /* Required for positioning controls */
+        }
+        #destination-map { width: 100%; height: 100%; }
+
+        .map-controls {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            z-index: 401; /* Must be higher than Leaflet's default z-index */
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .map-btn {
+            background: rgba(25, 25, 25, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+        
+        .map-btn:hover {
+            background: #FF8A24;
+            border-color: #FF8A24;
+        }
+        
+        .map-btn.active {
+            background: #FF9E44;
+            color: white;
+            border-color: #FF9E44;
+            box-shadow: 0 4px 10px rgba(255, 158, 68, 0.3);
+        }
+        /* --- END: MAP FILTER STYLES --- */
+
+        /* Gender Filter */
+        .gender-filter { display: flex; justify-content: center; gap: 15px; margin: 40px 0; }
+        .gender-btn { background: rgba(255, 255, 255, 0.1); border: 2px solid rgba(255, 255, 255, 0.3); color: #fff; padding: 12px 25px; border-radius: 30px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; }
+        .gender-btn:hover { background: rgba(255, 255, 255, 0.2); transform: translateY(-3px); }
+        .gender-btn.active { background: #FF9E44; border-color: #FF9E44; box-shadow: 0 5px 15px rgba(255, 158, 68, 0.4); }
+        
+        /* Guide Options */
+        .guide-options { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 30px; margin-top: 40px; }
+        .guide-option { background: rgba(255, 255, 255, 0.1); border-radius: 15px; padding: 20px; text-align: center; backdrop-filter: blur(10px); transition: all 0.3s ease; display: flex; flex-direction: column; justify-content: space-between; }
+        .guide-option:hover { transform: translateY(-10px); background: rgba(255, 255, 255, 0.15); box-shadow: 0 15px 30px rgba(0,0,0,0.2); }
+        .guide-avatar { width: 100px; height: 100px; border-radius: 50%; overflow: hidden; margin: 0 auto 15px; border: 3px solid #FF9E44; cursor: pointer; }
+        .guide-avatar img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease; }
+        .guide-avatar:hover img { transform: scale(1.1); }
+        .guide-option h3 { font-size: 20px; margin-bottom: 5px; color: #FFDDAA; }
+        .guide-option .guide-meta { font-size: 13px; opacity: 0.8; margin-bottom: 10px; }
+        .guide-option .guide-specialty { font-size: 14px; opacity: 0.9; margin-bottom: 12px; min-height: 40px; }
+        .guide-rating { font-size: 14px; margin-bottom: 12px; color: #FFD700; }
+        .guide-languages { margin-bottom: 15px; display: flex; flex-wrap: wrap; justify-content: center; gap: 5px; }
+        .language-tag { background: rgba(255, 158, 68, 0.2); padding: 3px 8px; border-radius: 12px; font-size: 11px; font-weight: 500; }
+        .select-guide-btn { background: #FF9E44; color: white; border: none; padding: 12px 20px; border-radius: 30px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; width: 100%; margin-top: auto; }
+        .select-guide-btn:hover { background: #FF8A24; transform: scale(1.05); }
+
+        /* --- START: MODAL (POP-UP) STYLES --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .modal-overlay.visible {
+            opacity: 1;
+            pointer-events: all;
+        }
+        .modal-content {
+            background: rgba(30, 30, 30, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px 40px;
+            width: 90%;
+            max-width: 800px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            display: grid;
+            grid-template-columns: 180px 1fr;
+            gap: 30px;
+            position: relative;
+            transform: scale(0.95);
+            transition: transform 0.3s ease;
+        }
+        .modal-overlay.visible .modal-content {
+            transform: scale(1);
+        }
+        #close-modal-btn {
+            position: absolute;
+            top: 15px; right: 15px;
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            border: none;
+            width: 30px; height: 30px;
+            border-radius: 50%;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        #close-modal-btn:hover { background: #FF9E44; transform: rotate(90deg); }
+        .modal-avatar-section img {
+            width: 180px; height: 180px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid #FF9E44;
+        }
+        .modal-stats { display: flex; gap: 20px; margin-top: 15px; text-align: center; justify-content: center; }
+        .modal-stats .stat-value { font-size: 20px; font-weight: 700; color: #FF9E44; }
+        .modal-stats .stat-label { font-size: 12px; opacity: 0.7; }
+        .modal-details h2 { font-size: 28px; font-weight: 600; margin: 0; }
+        .modal-details .meta-info { font-size: 16px; opacity: 0.8; margin-bottom: 15px; }
+        .modal-details .info-item { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; font-size: 15px; }
+        .modal-details .info-item i { color: #FF9E44; width: 20px; text-align: center; }
+        .modal-details .bio { font-size: 14px; opacity: 0.9; line-height: 1.6; margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; }
+        .modal-verification { display: flex; justify-content: space-between; margin-top: 25px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; grid-column: 1 / -1; }
+        .verification-item { text-align: center; opacity: 0.5; transition: opacity 0.3s ease; }
+        .verification-item.verified { opacity: 1; }
+        .verification-item i { font-size: 20px; display: block; margin-bottom: 5px; }
+        .verification-item.verified .fa-id-badge { color: #4CAF50; }
+        .verification-item.verified .fa-shield-alt { color: #FFC107; }
+        .verification-item.verified .fa-award { color: #2196F3; }
+        .verification-item span { font-size: 12px; }
+        /* --- END: MODAL STYLES --- */
+        
+        /* Responsive */
+        @media (max-width: 900px) { header { flex-direction: column; gap: 20px; } .guide-section h1 { font-size: 36px; } }
+        @media (max-width: 768px) {
+            .modal-content { grid-template-columns: 1fr; text-align: center; }
+            .modal-avatar-section img { margin: 0 auto; width: 150px; height: 150px; }
+            .modal-details .info-item { justify-content: center; }
+            .map-controls { flex-direction: row; right: 50%; transform: translateX(50%); top: auto; bottom: 15px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="#" class="logo"><i class="fas fa-compass logo-icon"></i>Wanderlo</a>
+            <nav>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Destinations</a></li>
+                    <li><a href="#" class="highlight">Guides</a></li>
+                    <li><a href="#">Support</a></li>
+                </ul>
+            </nav>
+            <button class="login-btn"><i class="fas fa-user"></i> Login</button>
+        </header>
+        
+        <section class="guide-section">
+            <h1>Your Destination Awaits</h1>
+            <div class="destination-info" id="destination-info">Loading destination...</div>
+            <div class="map-container">
+                <div class="map-controls">
+                    <button class="map-btn active" id="show-hotels"><i class="fas fa-hotel"></i> Hotels</button>
+                    <button class="map-btn" id="show-restaurants"><i class="fas fa-utensils"></i> Restaurants</button>
+                    <button class="map-btn" id="show-attractions"><i class="fas fa-camera"></i> Attractions</button>
+                </div>
+                <div id="destination-map"></div>
+            </div>
+            <p>Ready to explore? Click a guide's photo for details, then select your favorite.</p>
+            <div class="gender-filter">
+                <button class="gender-btn" data-gender="male"><i class="fas fa-male"></i> Male Guides</button>
+                <button class="gender-btn" data-gender="female"><i class="fas fa-female"></i> Female Guides</button>
+            </div>
+            <div class="guide-options" id="guide-options" style="display: none;"></div>
+        </section>
+    </div>
+
+    <div id="guide-modal-overlay" class="modal-overlay">
+        <div class="modal-content">
+            <button id="close-modal-btn">&times;</button>
+            <div class="modal-avatar-section">
+                <img id="modal-avatar" src="" alt="Guide Avatar">
+                <div id="modal-stats" class="modal-stats"></div>
+            </div>
+            <div class="modal-details">
+                <h2 id="modal-name"></h2>
+                <p id="modal-meta-info" class="meta-info"></p>
+                <div id="modal-languages" class="info-item"></div>
+                <div id="modal-specialty" class="info-item"></div>
+                <p id="modal-bio" class="bio"></p>
+            </div>
+            <div id="modal-verification" class="modal-verification"></div>
+        </div>
+    </div>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- 1. DOM ELEMENTS ---
+            const guideOptionsContainer = document.getElementById('guide-options');
+            const destinationInfo = document.getElementById('destination-info');
+            const genderButtons = document.querySelectorAll('.gender-btn');
+            const modalOverlay = document.getElementById('guide-modal-overlay');
+            const closeModalBtn = document.getElementById('close-modal-btn');
+            const mapButtons = document.querySelectorAll('.map-btn'); // <-- For map filter
+
+            // --- 2. DESTINATION COORDINATES ---
+            const destinationCoords = { 'Varanasi, Uttar Pradesh': [25.3176, 82.9739], 'Goa (North & South)': [15.3173, 74.2285], 'Tawang, Arunachal Pradesh': [27.5852, 91.8596], 'Kaziranga National Park, Assam': [26.5775, 93.1711], 'Leh & Ladakh': [34.1526, 77.5771], 'Kashmir (Srinagar, Gulmarg, Pahalgam)': [34.0837, 74.7973], 'Jodhpur, Rajasthan': [26.2389, 73.0243], 'Hampi, Karnataka': [15.3350, 76.4600], 'McLeod Ganj / Dharamsala, Himachal Pradesh': [32.2426, 76.3213], 'Manali, Himachal Pradesh': [32.2432, 77.1892], 'Shimla, Himachal Pradesh': [31.1048, 77.1734], 'Rann of Kutch, Gujarat': [23.7337, 70.4107], 'Pushkar, Rajasthan': [26.4883, 74.5510], 'Uttarakhand – Valley of Flowers': [30.7277, 79.5854], 'Udaipur, Rajasthan': [24.5854, 73.7125], 'Kodaikanal, Tamil Nadu': [10.2381, 77.4892], 'Rishikesh, Uttarakhand': [30.0869, 78.2676], 'Shillong, Meghalaya': [25.5788, 91.8933], 'Andaman Islands': [11.6234, 92.7265], 'Jaisalmer, Rajasthan': [26.9157, 70.9083] };
+
+            // --- 3. EXPANDED GUIDE DATABASE ---
+            const guides = [
+                 // Male Guides
+                { id: 1, name: "Rajesh Kumar", gender: "male", age: 32, avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500", specialty: "Beach Tours, History, Culture", location: "Goa, India", rating: 4.9, tours: 127, responseRate: 98, languages: ["English", "Hindi", "Konkani"], bio: "Experienced tour guide with extensive knowledge of Goa's beaches, history, and culture. Loves sharing hidden gems and local insights with travelers.", verification: { id: true, background: true, certification: true } },
+                { id: 2, name: "Vikram Singh", gender: "male", age: 35, avatar: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=500", specialty: "Adventure & Water Sports", location: "Goa, India", rating: 4.7, tours: 85, responseRate: 92, languages: ["English", "Hindi", "Marathi"], bio: "Adventure enthusiast and certified water sports instructor. Expert in scuba diving, parasailing, and other beach activities with a safety-first approach.", verification: { id: true, background: true, certification: false } },
+                { id: 3, name: "Arjun Mehra", gender: "male", age: 29, avatar: "https://images.unsplash.com/photo-1615109398623-88346a601842?w=500", specialty: "Nightlife & Party Scene", location: "Goa, India", rating: 4.8, tours: 110, responseRate: 99, languages: ["English", "Hindi"], bio: "Your go-to guide for the best clubs, beach parties, and nightlife spots in Goa. Knows all the local hotspots and ensures a great time.", verification: { id: true, background: false, certification: true } },
+                { id: 4, name: "Rohan Sharma", gender: "male", age: 38, avatar: "https://images.unsplash.com/photo-1564564321837-a57b7070ac4f?w=500", specialty: "Family-Friendly Tours", location: "Goa, India", rating: 4.9, tours: 150, responseRate: 97, languages: ["English", "Hindi", "Gujarati"], bio: "Specializes in creating fun and safe tours for families with children. Patient, friendly, and full of interesting stories to keep everyone engaged.", verification: { id: true, background: true, certification: true } },
+                { id: 5, name: "Kabir Das", gender: "male", age: 45, avatar: "https://images.unsplash.com/photo-1522529599102-193c0d76b5b6?w=500", specialty: "Spiritual & Wellness Retreats", location: "Goa, India", rating: 4.6, tours: 75, responseRate: 93, languages: ["English", "Hindi", "Sanskrit"], bio: "A calm and knowledgeable guide for those seeking peace. Specializes in yoga retreats, meditation spots, and quiet ancient temples.", verification: { id: true, background: true, certification: false } },
+                { id: 6, name: "Aditya Rao", gender: "male", age: 27, avatar: "https://images.unsplash.com/photo-1607346256330-16803a5a8f3c?w=500", specialty: "Bike Tours & Exploration", location: "Goa, India", rating: 4.8, tours: 95, responseRate: 96, languages: ["English", "Konkani"], bio: "Explore Goa's scenic routes and hidden villages on two wheels. Aditya is an expert biker and guide who ensures a thrilling yet safe journey.", verification: { id: true, background: false, certification: true } },
+                { id: 7, name: "Sameer Khan", gender: "male", age: 31, avatar: "https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=500", specialty: "Food & Culinary Tours", location: "Goa, India", rating: 4.9, tours: 130, responseRate: 98, languages: ["English", "Hindi", "Urdu"], bio: "A passionate foodie who will take you on a culinary journey through Goa's best local eateries, seafood shacks, and traditional kitchens.", verification: { id: true, background: true, certification: true } },
+                { id: 8, name: "Dev Patel", gender: "male", age: 25, avatar: "https://images.unsplash.com/photo-1542909168-82c3e7fdca5c?w=500", specialty: "Budget & Backpacker Guide", location: "Goa, India", rating: 4.7, tours: 80, responseRate: 95, languages: ["English", "Hindi"], bio: "Perfect for backpackers and budget travelers. Dev knows all the tips and tricks to experience Goa authentically without breaking the bank.", verification: { id: true, background: false, certification: false } },
+                { id: 9, name: "Ishaan Verma", gender: "male", age: 33, avatar: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=500", specialty: "Luxury & VIP Experiences", location: "Goa, India", rating: 4.9, tours: 60, responseRate: 100, languages: ["English", "Hindi", "Russian"], bio: "Provides premium, tailor-made experiences including private yachts, exclusive resorts, and fine dining for a discerning clientele.", verification: { id: true, background: true, certification: true } },
+                { id: 10, name: "Neil D'Souza", gender: "male", age: 40, avatar: "https://images.unsplash.com/photo-1557862921-37829c790f19?w=500", specialty: "Goan History & Architecture", location: "Goa, India", rating: 4.8, tours: 140, responseRate: 96, languages: ["English", "Konkani", "Portuguese"], bio: "A local historian passionate about Goa's Portuguese heritage, ancient temples, and colonial architecture. His storytelling brings history to life.", verification: { id: true, background: true, certification: true } },
+                { id: 11, name: "Karan Malhotra", gender: "male", age: 28, avatar: "https://images.unsplash.com/photo-1618077360395-f3068be8e001?w=500", specialty: "Photography & Instagram Tours", location: "Goa, India", rating: 4.9, tours: 90, responseRate: 97, languages: ["English", "Hindi", "Punjabi"], bio: "A professional photographer who will not only guide you to the most photogenic spots but also help you take stunning pictures for your social media.", verification: { id: true, background: true, certification: false } },
+                { id: 12, name: "Yusuf Ahmed", gender: "male", age: 36, avatar: "https://images.unsplash.com/photo-1611485988346-44794b3c3472?w=500", specialty: "Wildlife & Nature Trails", location: "Goa, India", rating: 4.7, tours: 70, responseRate: 93, languages: ["English", "Hindi"], bio: "Explore Goa's lush hinterlands, spice plantations, and wildlife sanctuaries with an experienced naturalist. Perfect for nature lovers.", verification: { id: true, background: true, certification: true } },
+                { id: 13, name: "Mohan Krishnan", gender: "male", age: 50, avatar: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=500", specialty: "Cultural Immersion", location: "Goa, India", rating: 4.8, tours: 200, responseRate: 95, languages: ["English", "Hindi", "Tamil"], bio: "A veteran guide offering deep insights into local life, traditions, and festivals. An authentic Goan experience is guaranteed with him.", verification: { id: true, background: true, certification: true } },
+                { id: 14, name: "Jay Costa", gender: "male", age: 26, avatar: "https://images.unsplash.com/photo-1600486913747-55e5470d6f40?w=500", specialty: "Surfing & Watersports Instructor", location: "Goa, India", rating: 4.9, tours: 105, responseRate: 98, languages: ["English", "Konkani"], bio: "Certified surfing instructor ready to get you riding the waves. Also skilled in kayaking and paddleboarding for a fun day in the water.", verification: { id: true, background: false, certification: true } },
+                { id: 15, name: "Leo Fernandes", gender: "male", age: 30, avatar: "https://images.unsplash.com/photo-1545167622-3a6ac756b47a?w=500", specialty: "Music & Art Scene", location: "Goa, India", rating: 4.7, tours: 65, responseRate: 94, languages: ["English", "Hindi"], bio: "A local musician who can introduce you to Goa's vibrant live music scene, art galleries, and creative communities for an offbeat experience.", verification: { id: true, background: false, certification: false } },
+                // Female Guides
+                { id: 16, name: "Priya Sharma", gender: "female", age: 28, avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=500", specialty: "Cultural Experiences, Local Cuisine", location: "Goa, India", rating: 4.8, tours: 98, responseRate: 95, languages: ["English", "Hindi", "Portuguese"], bio: "Professional tour guide specializing in cultural experiences and local cuisine. Passionate about sharing Goa's rich heritage with visitors.", verification: { id: true, background: true, certification: true } },
+                { id: 17, name: "Anita Desai", gender: "female", age: 30, avatar: "https://images.unsplash.com/photo-1554151228-14d9def656e4?w=500", specialty: "Photography Tours, Heritage Sites", location: "Goa, India", rating: 4.9, tours: 112, responseRate: 96, languages: ["English", "Hindi", "French"], bio: "Professional photographer and guide with expertise in Goa's heritage sites. Helps travelers capture the best moments of their journey.", verification: { id: true, background: true, certification: true } },
+                { id: 18, name: "Aisha Kapoor", gender: "female", age: 26, avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=500", specialty: "Yoga & Wellness", location: "Goa, India", rating: 4.9, tours: 85, responseRate: 99, languages: ["English", "Hindi"], bio: "Certified yoga instructor offering private sessions on the beach and guided tours to serene wellness spots for mind and body.", verification: { id: true, background: true, certification: true } },
+                { id: 19, name: "Diya Mehta", gender: "female", age: 34, avatar: "https://images.unsplash.com/photo-1580489944761-15a19d6549", specialty: "Shopping & Local Markets", location: "Goa, India", rating: 4.7, tours: 120, responseRate: 94, languages: ["English", "Hindi", "Gujarati"], bio: "A savvy guide for the best shopping experiences, from bustling flea markets to unique boutique designer stores.", verification: { id: true, background: false, certification: false } },
+                { id: 20, name: "Sana Ali", gender: "female", age: 29, avatar: "https://images.unsplash.com/photo-1599425806328-9a0dd32f58eb?w=500", specialty: "Solo Female Traveler Guide", location: "Goa, India", rating: 4.9, tours: 95, responseRate: 98, languages: ["English", "Hindi", "Urdu"], bio: "Specializes in creating safe, empowering, and fun itineraries for solo female travelers. Knows all the best-kept secrets.", verification: { id: true, background: true, certification: true } },
+                { id: 21, name: "Maya Reddy", gender: "female", age: 42, avatar: "https://images.unsplash.com/photo-1557053910-d9eadeed1c58?w=500", specialty: "Historical & Museum Tours", location: "Goa, India", rating: 4.8, tours: 180, responseRate: 96, languages: ["English", "Hindi", "Telugu"], bio: "An art historian and an expert on Goan history. Her tours of Old Goa and the local museums are incredibly insightful.", verification: { id: true, background: true, certification: true } },
+                { id: 22, name: "Isabella Gomes", gender: "female", age: 27, avatar: "https://images.unsplash.com/photo-1601412436009-d96440277a3b?w=500", specialty: "Cooking Classes & Farm Tours", location: "Goa, India", rating: 4.9, tours: 75, responseRate: 97, languages: ["English", "Konkani", "Portuguese"], bio: "Learn to cook authentic Goan cuisine in a traditional home setting. Also offers tours of local spice farms.", verification: { id: true, background: false, certification: true } },
+                { id: 23, name: "Fatima Sheikh", gender: "female", age: 31, avatar: "https://images.unsplash.com/photo-1619895862022-09114b41f16f?w=500", specialty: "Bird Watching & Eco-Tours", location: "Goa, India", rating: 4.8, tours: 60, responseRate: 95, languages: ["English", "Hindi"], bio: "An ecologist by profession, Fatima leads fascinating tours through Goa's rich biodiversity hotspots and bird sanctuaries.", verification: { id: true, background: true, certification: true } }
+            ];
+            
+            // --- 4. INITIALIZE PAGE, MAP, AND DYNAMIC DATA ---
+            const selectedDestinationData = JSON.parse(localStorage.getItem('selectedDestination'));
+            const defaultCoords = [20.5937, 78.9629]; let currentCoords = defaultCoords; let currentZoom = 5;
+
+            // --- DYNAMIC LOCATION UPDATE LOGIC ---
+            if (selectedDestinationData && selectedDestinationData.name) {
+                destinationInfo.textContent = selectedDestinationData.name;
+                const newLocation = selectedDestinationData.name;
+                guides.forEach(guide => {
+                    guide.location = newLocation;
+                });
+                if (destinationCoords[newLocation]) {
+                    currentCoords = destinationCoords[newLocation]; currentZoom = 11;
+                    localStorage.setItem('mapPoint', JSON.stringify(currentCoords));
+                }
+            } else { 
+                destinationInfo.textContent = "Destination not selected"; 
+            }
+            
+            const map = L.map('destination-map').setView(currentCoords, currentZoom);
+            L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { attribution: 'Tiles &copy; Esri' }).addTo(map);
+            const greenIcon = new L.Icon({ iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png', shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png', iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41] });
+            if (currentZoom > 5) { L.marker(currentCoords, { icon: greenIcon }).addTo(map).bindPopup(`<b>Your Destination:</b><br>${selectedDestinationData.name}`).openPopup(); }
+
+            // --- START: MAP FILTER LOGIC ---
+            const hotelsLayer = L.layerGroup().addTo(map);
+            const restaurantsLayer = L.layerGroup();
+            const attractionsLayer = L.layerGroup();
+            
+            function generatePointsOfInterest(lat, lng, count, type) {
+                const points = [];
+                for (let i = 0; i < count; i++) {
+                    const offsetLat = (Math.random() - 0.5) * 0.15; // Increased radius for better spread
+                    const offsetLng = (Math.random() - 0.5) * 0.15;
+                    points.push({ lat: lat + offsetLat, lng: lng + offsetLng, name: `${type} #${i+1}` });
+                }
+                return points;
+            }
+
+            if(currentZoom > 5) { // Only generate points if a destination is selected
+                const hotels = generatePointsOfInterest(currentCoords[0], currentCoords[1], 8, 'Hotel');
+                const restaurants = generatePointsOfInterest(currentCoords[0], currentCoords[1], 12, 'Restaurant');
+                const attractions = generatePointsOfInterest(currentCoords[0], currentCoords[1], 10, 'Attraction');
+                
+                hotels.forEach(hotel => {
+                    const icon = L.divIcon({ html: '<i class="fas fa-hotel" style="color: #FF9E44; font-size: 22px; text-shadow: 0 0 3px #000;"></i>', iconSize: [22, 22], className: 'map-poi-icon' });
+                    L.marker([hotel.lat, hotel.lng], { icon: icon }).addTo(hotelsLayer).bindPopup(`<b>${hotel.name}</b>`);
+                });
+                
+                restaurants.forEach(restaurant => {
+                    const icon = L.divIcon({ html: '<i class="fas fa-utensils" style="color: #FF6B6B; font-size: 20px; text-shadow: 0 0 3px #000;"></i>', iconSize: [20, 20], className: 'map-poi-icon' });
+                    L.marker([restaurant.lat, restaurant.lng], { icon: icon }).addTo(restaurantsLayer).bindPopup(`<b>${restaurant.name}</b>`);
+                });
+                
+                attractions.forEach(attraction => {
+                    const icon = L.divIcon({ html: '<i class="fas fa-camera" style="color: #4CAF50; font-size: 20px; text-shadow: 0 0 3px #000;"></i>', iconSize: [20, 20], className: 'map-poi-icon' });
+                    L.marker([attraction.lat, attraction.lng], { icon: icon }).addTo(attractionsLayer).bindPopup(`<b>${attraction.name}</b>`);
+                });
+            }
+
+            mapButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    mapButtons.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    const type = this.id.replace('show-', '');
+                    
+                    hotelsLayer.removeFrom(map);
+                    restaurantsLayer.removeFrom(map);
+                    attractionsLayer.removeFrom(map);
+
+                    if (type === 'hotels') hotelsLayer.addTo(map);
+                    else if (type === 'restaurants') restaurantsLayer.addTo(map);
+                    else if (type === 'attractions') attractionsLayer.addTo(map);
+                });
+            });
+            // --- END: MAP FILTER LOGIC ---
+
+
+            // --- 5. RENDER GUIDES & MAIN PAGE LOGIC ---
+            function renderGuides(genderFilter) {
+                guideOptionsContainer.innerHTML = ''; 
+                const filteredGuides = guides.filter(guide => guide.gender === genderFilter);
+                filteredGuides.forEach(guide => {
+                    const guideElement = document.createElement('div');
+                    guideElement.className = 'guide-option'; guideElement.dataset.id = guide.id; 
+                    const languagesHTML = guide.languages.map(lang => `<span class="language-tag">${lang}</span>`).join('');
+                    guideElement.innerHTML = `
+                        <div>
+                           <div class="guide-avatar"><img src="${guide.avatar}" alt="${guide.name}" onerror="this.src='https://placehold.co/100x100';"></div>
+                            <h3>${guide.name}</h3>
+                            <div class="guide-meta">${guide.age} years • ${guide.location}</div>
+                            <div class="guide-rating"><i class="fas fa-star"></i> ${guide.rating} (${guide.tours} tours)</div>
+                            <p class="guide-specialty">${guide.specialty}</p>
+                            <div class="guide-languages">${languagesHTML}</div>
+                        </div>
+                        <button class="select-guide-btn">Select</button>`;
+                    guideOptionsContainer.appendChild(guideElement);
+                });
+            }
+            genderButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    genderButtons.forEach(btn => btn.classList.remove('active')); button.classList.add('active');
+                    guideOptionsContainer.style.display = 'grid'; const gender = button.dataset.gender; renderGuides(gender);
+                    guideOptionsContainer.scrollIntoView({ behavior: 'smooth' });
+                });
+            });
+
+            // --- 6. MODAL (POP-UP) LOGIC ---
+            function populateAndShowModal(guide) {
+                document.getElementById('modal-avatar').src = guide.avatar;
+                document.getElementById('modal-name').textContent = guide.name;
+                document.getElementById('modal-meta-info').textContent = `${guide.age} years old • ${guide.location}`;
+                document.getElementById('modal-languages').innerHTML = `<i class="fas fa-language"></i> ${guide.languages.join(', ')}`;
+                document.getElementById('modal-specialty').innerHTML = `<i class="fas fa-star"></i> ${guide.specialty}`;
+                document.getElementById('modal-bio').textContent = guide.bio;
+                document.getElementById('modal-stats').innerHTML = `
+                    <div class="stat"><div class="stat-value">${guide.rating}</div><div class="stat-label">Rating</div></div>
+                    <div class="stat"><div class="stat-value">${guide.tours}</div><div class="stat-label">Tours</div></div>
+                    <div class="stat"><div class="stat-value">${guide.responseRate}%</div><div class="stat-label">Response</div></div>`;
+                document.getElementById('modal-verification').innerHTML = `
+                    <div class="verification-item ${guide.verification.id ? 'verified' : ''}"><i class="fas fa-id-badge"></i><span>Verified ID</span></div>
+                    <div class="verification-item ${guide.verification.background ? 'verified' : ''}"><i class="fas fa-shield-alt"></i><span>Background Check</span></div>
+                    <div class="verification-item ${guide.verification.certification ? 'verified' : ''}"><i class="fas fa-award"></i><span>Certified</span></div>`;
+                modalOverlay.classList.add('visible');
+            }
+            function closeModal() { modalOverlay.classList.remove('visible'); }
+            closeModalBtn.addEventListener('click', closeModal);
+            modalOverlay.addEventListener('click', (e) => { if (e.target === modalOverlay) { closeModal(); } });
+
+            // --- 7. EVENT DELEGATION FOR GUIDE CARDS ---
+            guideOptionsContainer.addEventListener('click', function(e) {
+                const guideCard = e.target.closest('.guide-option');
+                if (!guideCard) return; 
+                const guideId = parseInt(guideCard.dataset.id, 10);
+                const selectedGuide = guides.find(g => g.id === guideId);
+                if (!selectedGuide) return;
+                
+                if (e.target.closest('.guide-avatar')) {
+                    populateAndShowModal(selectedGuide);
+                }
+                else if (e.target.classList.contains('select-guide-btn')) {
+                    localStorage.setItem('selectedGuide', JSON.stringify(selectedGuide));
+                    window.location.href = 'final image.html';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

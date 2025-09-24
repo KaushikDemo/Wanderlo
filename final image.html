@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wanderlo - Booking Confirmation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+                url('https://images.unsplash.com/photo-1469474968028-56623f02e42e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Header and Navigation */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            animation: fadeIn 1s ease;
+        }
+
+        .logo {
+            font-size: 32px;
+            font-weight: 700;
+            color: #FF9E44;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            animation: pulse 2s infinite;
+            /* --- ADDED: Transition for hover effect --- */
+            transition: color 0.3s ease, text-shadow 0.3s ease, transform 0.3s ease;
+        }
+        
+        /* --- ADDED: Hover effect for Logo --- */
+        .logo:hover {
+            color: #ffb37c; /* Lighter shade on hover */
+            text-shadow: 0 0 10px rgba(255, 158, 68, 0.7);
+            transform: scale(1.03);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .logo-icon {
+            margin-right: 8px;
+            font-size: 28px;
+        }
+
+        /* Confirmation Section */
+        .confirmation-section {
+            text-align: center;
+            padding: 40px 0;
+            animation: fadeUp 1s ease;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .confirmation-section h1 {
+            font-size: 42px;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .confirmation-badge {
+            display: inline-block;
+            background: linear-gradient(45deg, #FF9E44, #FF6B6B);
+            padding: 10px 25px;
+            border-radius: 30px;
+            font-weight: 600;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(255, 158, 68, 0.4);
+            /* --- ADDED: Transition for hover effect --- */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        /* --- ADDED: Hover effect for Badge --- */
+        .confirmation-badge:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(255, 158, 68, 0.6);
+        }
+
+        .confirmation-section p.subtitle {
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+
+        /* Booking Summary & Expense Breakdown Container */
+        .details-container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .details-container h2 {
+            color: #FF9E44;
+            margin-bottom: 25px;
+            text-align: center;
+            font-size: 28px;
+        }
+
+        /* --- MODIFIED: Trip Summary Styles --- */
+        .summary-dates-duration {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            margin-bottom: 30px;
+            padding: 0 10px;
+        }
+
+        .summary-dates-duration::before,
+        .summary-dates-duration::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: calc(30% - 20px);
+            height: 2px;
+            transform: translateY(-50%);
+            z-index: 1;
+            animation: line-flow 3s linear infinite;
+        }
+        .summary-dates-duration::before {
+            left: 0;
+            background: linear-gradient(to right, transparent, rgba(255, 158, 68, 0.5));
+        }
+        .summary-dates-duration::after {
+            right: 0;
+            background: linear-gradient(to left, transparent, rgba(255, 158, 68, 0.5));
+        }
+
+        @keyframes line-flow { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
+
+        .summary-date-card {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 15px 10px;
+            text-align: center;
+            flex: 0 0 32%;
+            z-index: 2;
+            /* --- ADDED: Transition for hover effect --- */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        /* --- ADDED: Hover effect for summary date cards --- */
+        .summary-date-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .summary-date-card h3 { font-size: 16px; margin-bottom: 5px; color: #FFDDAA; }
+        .summary-date-card p { font-size: 14px; font-weight: 500; }
+
+        .duration-card {
+            flex: 0 0 28%;
+            background: linear-gradient(45deg, #FF9E44, #FF6B6B);
+            padding: 10px 15px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(255, 158, 68, 0.4);
+            z-index: 2;
+             /* --- ADDED: Transition for hover effect --- */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        /* --- ADDED: Hover effect for duration card --- */
+        .duration-card:hover {
+            transform: translateY(-5px) scale(1.03);
+            box-shadow: 0 10px 25px rgba(255, 158, 68, 0.6);
+        }
+
+        .duration-card h3 { font-size: 18px; margin-bottom: 3px; }
+        .duration-card p { font-size: 20px; font-weight: 700; }
+        
+        /* FIX: Corrected grid layout for details list to prevent overlap */
+        .summary-details-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px 30px;
+            text-align: left;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 40px;
+        }
+        .detail-item { 
+            display: flex; 
+            align-items: center; 
+            font-size: 16px; 
+            padding: 5px;
+            border-radius: 5px;
+            /* --- ADDED: Transition for hover effect --- */
+            transition: background-color 0.3s ease;
+        }
+        
+        /* --- ADDED: Hover effect for detail items --- */
+        .detail-item:hover {
+            background-color: rgba(255, 158, 68, 0.15);
+        }
+
+        .detail-label { font-weight: 600; color: #FFDDAA; flex-basis: 120px; }
+        .detail-label i { margin-right: 12px; color: #FF9E44; width: 20px; text-align: center; }
+        .detail-value { font-weight: 500; flex-grow: 1; }
+        
+        /* NEW: Styles for smaller Package and Guide Cards */
+        .info-cards-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 40px;
+            align-items: center;
+        }
+        .info-card {
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 15px;
+            overflow: hidden;
+            text-align: left;
+            height: 100%; /* Make cards equal height */
+            /* --- ADDED: Transition for hover effect --- */
+            transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        /* --- ADDED: Hover effect for info cards (Package & Guide) --- */
+        .info-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .package-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+        .guide-card {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            gap: 20px;
+        }
+        .guide-image-container img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%; /* Makes image circular */
+            object-fit: cover;
+            border: 3px solid #FF9E44;
+            flex-shrink: 0;
+            /* --- ADDED: Transition for hover effect --- */
+            transition: transform 0.4s ease, border-color 0.4s ease;
+        }
+
+        /* --- ADDED: Hover effect for guide image --- */
+        .info-card:hover .guide-image-container img {
+            transform: scale(1.1) rotate(5deg);
+            border-color: #FF6B6B;
+        }
+
+        .info-card-content { padding: 20px; }
+        .info-card-content h3 { color: #FF9E44; font-size: 22px; margin-bottom: 15px; }
+        .info-card-content p { font-size: 14px; margin-bottom: 8px; line-height: 1.6; }
+        .info-card-content p strong { color: #FFDDAA; }
+        
+        /* Expense Table */
+        hr.divider { border: none; height: 1px; background: rgba(255, 255, 255, 0.2); margin: 40px auto; }
+        .expense-table { width: 100%; border-collapse: collapse; background: rgba(0, 0, 0, 0.2); border-radius: 10px; overflow: hidden; margin-top: 40px; }
+        .expense-table th { background: rgba(255, 158, 68, 0.3); padding: 15px; text-align: left; }
+        .expense-table td { padding: 15px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+        .expense-table tbody tr {
+            /* --- ADDED: Transition for hover effect --- */
+            transition: background-color 0.3s ease;
+        }
+        
+        /* --- ADDED: Hover effect for table rows --- */
+        .expense-table tbody tr:not(.total-row):hover {
+            background-color: rgba(255, 255, 255, 0.08);
+        }
+
+        .total-row td { font-weight: bold; color: #FF9E44; font-size: 18px; }
+
+        /* Payment Options */
+        .payment-options { margin: 40px 0; }
+        .payment-options h2 { color: #FF9E44; margin-bottom: 20px; text-align: center; font-size: 28px; }
+        .payment-methods { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+        .payment-method { 
+            background: rgba(255, 255, 255, 0.1); 
+            border-radius: 10px; 
+            padding: 20px; 
+            text-align: center; 
+            cursor: pointer; 
+            text-decoration: none; 
+            color: inherit; 
+            position: relative;
+            overflow: hidden;
+            /* --- ADDED: Transition for hover effect --- */
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+        }
+
+        /* --- ADDED: Advanced Hover effect for payment methods --- */
+        .payment-method::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: radial-gradient(circle, rgba(255, 158, 68, 0.4) 0%, rgba(255, 158, 68, 0) 70%);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.5s ease, height 0.5s ease;
+        }
+        
+        .payment-method:hover {
+            transform: scale(1.05) translateY(-5px);
+            background-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 10px 25px rgba(255, 158, 68, 0.5);
+        }
+
+        .payment-method:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        .payment-method > * { /* Ensures text and icon are above the ::before pseudo-element */
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 900px) {
+            .info-cards-grid, .summary-details-list { grid-template-columns: 1fr; }
+            .guide-card { flex-direction: column; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <a href="index.html" class="logo">
+            <i class="fas fa-compass logo-icon"></i>Wanderlo
+        </a>
+    </header>
+
+    <section class="confirmation-section">
+        <h1>Booking Confirmation</h1>
+        <div class="confirmation-badge">
+            <i class="fas fa-check-circle"></i> Your Trip is Planned!
+        </div>
+        <p class="subtitle">Review your trip details and complete the payment to secure your adventure.</p>
+
+        <div class="details-container">
+
+            <h2><i class="fas fa-info-circle"></i> Trip Summary</h2>
+            <div class="summary-dates-duration">
+                <div class="summary-date-card"><h3><i class="fas fa-calendar-day"></i> From</h3><p id="summary-start-date">-</p></div>
+                <div class="duration-card"><h3>Duration</h3><p id="summary-duration">-</p></div>
+                <div class="summary-date-card"><h3><i class="fas fa-calendar-check"></i> To</h3><p id="summary-end-date">-</p></div>
+            </div>
+            <div class="summary-details-list">
+                <div class="detail-item"><span class="detail-label"><i class="fas fa-user-friends"></i> Travellers:</span><span class="detail-value" id="summary-travelers">-</span></div>
+                <div class="detail-item"><span class="detail-label"><i class="fas fa-phone"></i> Contact:</span><span class="detail-value" id="summary-contact">-</span></div>
+                <div class="detail-item"><span class="detail-label"><i class="fas fa-envelope"></i> Email:</span><span class="detail-value" id="summary-email">-</span></div>
+            </div>
+
+            <hr class="divider">
+
+            <h2><i class="fas fa-suitcase-rolling"></i> Your Itinerary & Team</h2>
+            <div class="info-cards-grid">
+                <div class="info-card package-card">
+                    <img id="package-image" src="https://placehold.co/600x400/222/FFF?text=Package" alt="Destination">
+                    <div class="info-card-content">
+                        <h3><i class="fas fa-map-marker-alt"></i> Package Details</h3>
+                        <p><strong>Destination:</strong> <span id="package-name">-</span></p>
+                        <p><strong>Cost per Day:</strong> <span id="package-cost-per-day">-</span></p>
+                        <p><strong>Description:</strong> <span id="package-desc">-</span></p>
+                    </div>
+                </div>
+                <div class="info-card guide-card">
+                    <div class="guide-image-container"><img id="guide-image" src="https://placehold.co/150x150/222/FFF?text=Guide" alt="Guide"></div>
+                    <div class="info-card-content">
+                        <h3><i class="fas fa-user-tie"></i> Your Guide</h3>
+                        <p><strong>Name:</strong> <span id="guide-name">-</span></p>
+                        <p><strong>Specialty:</strong> <span id="guide-specialty">-</span></p>
+                        <p><strong>Rating:</strong> <span id="guide-rating">-</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="divider">
+
+            <h2><i class="fas fa-receipt"></i> Expense Breakdown</h2>
+            <table class="expense-table">
+                <thead><tr><th>Category</th><th>Amount (₹)</th></tr></thead>
+                <tbody>
+                    <tr><td><i class="fas fa-hotel"></i> Accommodation</td><td id="expense-accommodation">-</td></tr>
+                    <tr><td><i class="fas fa-utensils"></i> Food & Dining</td><td id="expense-food">-</td></tr>
+                    <tr><td><i class="fas fa-bus"></i> Transportation</td><td id="expense-transportation">-</td></tr>
+                    <tr><td><i class="fas fa-ticket-alt"></i> Activities</td><td id="expense-activities">-</td></tr>
+                    <tr><td><i class="fas fa-user-shield"></i> Guide Services</td><td id="expense-guide">-</td></tr>
+                    <tr><td><i class="fas fa-gift"></i> Miscellaneous</td><td id="expense-misc">-</td></tr>
+                    <tr class="total-row"><td><strong>Total Amount</strong></td><td id="expense-total"><strong>-</strong></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="payment-options">
+            <h2><i class="fas fa-credit-card"></i> Proceed to Payment</h2>
+            <div class="payment-methods">
+                <a href="#" class="payment-method" id="cardPaymentBtn"><i class="fas fa-credit-card"></i><h3>Credit/Debit Card</h3></a>
+                <a href="#" class="payment-method" id="upiPaymentBtn"><i class="fas fa-mobile-alt"></i><h3>UPI Payment</h3></a>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // --- DATA RETRIEVAL ---
+    const destinationData = JSON.parse(localStorage.getItem('selectedDestination')) || {};
+    const guideData = JSON.parse(localStorage.getItem('selectedGuide')) || {};
+    const travelerCountRaw = sessionStorage.getItem('numTravelers');
+    const durationInfoRaw = sessionStorage.getItem('tripDuration');
+    const startDate = sessionStorage.getItem('tripStartDate') || '-';
+    const endDate = sessionStorage.getItem('tripEndDate') || '-';
+    const userMobile = sessionStorage.getItem('userMobile') || '-';
+    const userEmail = sessionStorage.getItem('userEmail') || '-';
+    
+    // --- PARSE DATA ---
+    const basePricePerDay = parseFloat(destinationData.price) || 0;
+    const numTravelers = parseInt(travelerCountRaw ? travelerCountRaw.split(' ')[0] : '0', 10) || 0;
+    const numDays = parseInt(durationInfoRaw ? durationInfoRaw.split(' ')[0] : '0', 10) || 0;
+    const travelerCountDisplay = travelerCountRaw || '-';
+    const durationDisplay = numDays > 0 ? `${numDays} Days` : '-';
+    
+    // --- CALCULATE TOTAL COST ---
+    let totalCost = 0;
+    if (basePricePerDay > 0 && numTravelers > 0 && numDays > 0) {
+        totalCost = basePricePerDay * numTravelers * numDays;
+    }
+    const formatCurrency = (amount) => {
+        if (typeof amount !== 'number' || isNaN(amount) || amount === 0) return '-';
+        return `₹${Math.round(amount).toLocaleString('en-IN')}`;
+    };
+
+    // --- POPULATE UI ELEMENTS ---
+    document.getElementById('summary-start-date').textContent = startDate;
+    document.getElementById('summary-duration').textContent = durationDisplay;
+    document.getElementById('summary-end-date').textContent = endDate;
+    document.getElementById('summary-travelers').textContent = travelerCountDisplay;
+    document.getElementById('summary-contact').textContent = userMobile;
+    document.getElementById('summary-email').textContent = userEmail;
+
+    // **IMAGE FIX**: Correctly reference destinationData.image
+    document.getElementById('package-image').src = destinationData.image || 'https://placehold.co/600x400';
+    document.getElementById('package-name').textContent = destinationData.name || '-';
+    document.getElementById('package-cost-per-day').textContent = formatCurrency(basePricePerDay);
+    document.getElementById('package-desc').textContent = destinationData.desc || 'An unforgettable travel experience awaits you.';
+
+    // **IMAGE FIX**: Correctly reference guideData.avatar
+    document.getElementById('guide-image').src = guideData.avatar || 'https://placehold.co/150x150';
+    document.getElementById('guide-name').textContent = guideData.name || '-';
+    document.getElementById('guide-specialty').textContent = guideData.specialty || '-';
+    document.getElementById('guide-rating').textContent = guideData.rating ? `${guideData.rating} / 5` : '-';
+
+    // --- EXPENSE BREAKDOWN ---
+    let accommodationCost = 0, foodCost = 0, transportationCost = 0, activitiesCost = 0, guideCost = 0, miscCost = 0;
+    if (totalCost > 0) {
+        accommodationCost = totalCost * 0.33;
+        foodCost = totalCost * 0.22;
+        transportationCost = totalCost * 0.15;
+        activitiesCost = totalCost * 0.15;
+        guideCost = totalCost * 0.08;
+        miscCost = totalCost - (accommodationCost + foodCost + transportationCost + activitiesCost + guideCost);
+    }
+    
+    document.getElementById('expense-accommodation').textContent = formatCurrency(accommodationCost);
+    document.getElementById('expense-food').textContent = formatCurrency(foodCost);
+    document.getElementById('expense-transportation').textContent = formatCurrency(transportationCost);
+    document.getElementById('expense-activities').textContent = formatCurrency(activitiesCost);
+    document.getElementById('expense-guide').textContent = formatCurrency(guideCost);
+    document.getElementById('expense-misc').textContent = formatCurrency(miscCost);
+    document.getElementById('expense-total').innerHTML = `<strong>${formatCurrency(totalCost)}</strong>`;
+
+    // --- PAYMENT LOGIC ---
+    const cardPaymentBtn = document.getElementById('cardPaymentBtn');
+    const upiPaymentBtn = document.getElementById('upiPaymentBtn');
+    const redirectToPayment = (event, baseUrl) => {
+        event.preventDefault();
+        if (totalCost > 0) {
+            window.location.href = `${baseUrl}?amount=${Math.round(totalCost)}`;
+        } else {
+            alert("Cannot proceed to payment. Please complete all previous steps.");
+        }
+    };
+    cardPaymentBtn.addEventListener('click', (event) => redirectToPayment(event, 'Cards.html'));
+    upiPaymentBtn.addEventListener('click', (event) => redirectToPayment(event, 'UPI.html'));
+});
+</script>
+</body>
+</html>
