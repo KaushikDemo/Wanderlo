@@ -7,8 +7,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* --- START: COUPON CARD STYLES --- */
-        /* Registering --angle for smooth animation */
         @property --angle {
           syntax: '<angle>';
           initial-value: 0deg;
@@ -16,7 +14,6 @@
         }
 
         :root {
-            /* Color Palette */
             --primary-accent: #FF9E44;
             --secondary-accent: #FF6B6B;
             --primary-text: #fff;
@@ -25,8 +22,7 @@
             --dark-overlay: rgba(0, 0, 0, 0.45);
             --border-width: 3px;
         }
-        /* --- END: COUPON CARD STYLES --- */
-
+        
         * {
             margin: 0;
             padding: 0;
@@ -210,7 +206,7 @@
             box-shadow: 0 5px 15px rgba(255, 158, 68, 0.4);
         }
         
-        /* Dropdown Styles */
+        /* Support Dropdown */
         .dropdown {
             position: relative;
         }
@@ -315,6 +311,28 @@
         
         .cta-button:active {
             transform: translateY(0);
+        }
+        
+        /* Section Title */
+        .section-title {
+            text-align: center;
+            margin: 60px 0 40px;
+            font-size: 32px;
+            color: #FF9E44;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: #FF9E44;
+            border-radius: 3px;
         }
         
         /* Features Section */
@@ -618,8 +636,7 @@
         }
         
         .form-group input,
-        .form-group textarea,
-        .form-group select {
+        .form-group textarea {
             width: 100%;
             padding: 12px 15px;
             background: rgba(255, 255, 255, 0.1);
@@ -629,14 +646,9 @@
             font-size: 16px;
             transition: all 0.3s ease;
         }
-
-        .form-group select option {
-            background: #333;
-        }
         
         .form-group input:focus,
-        .form-group textarea:focus,
-        .form-group select:focus {
+        .form-group textarea:focus {
             outline: none;
             border-color: #FF9E44;
             background: rgba(255, 255, 255, 0.15);
@@ -668,7 +680,7 @@
             box-shadow: 0 10px 20px rgba(0,0,0,0.2);
         }
         
-        /* Login & Signup Page Styles */
+        /* Login Page Styles */
         .login-container {
             display: flex;
             justify-content: center;
@@ -790,16 +802,6 @@
         .login-footer a:hover {
             text-decoration: underline;
         }
-
-        .form-row {
-            display: flex;
-            gap: 15px;
-            width: 100%;
-        }
-
-        .form-row .form-group {
-            flex: 1;
-        }
         
         /* Floating Elements */
         .floating-element {
@@ -809,9 +811,29 @@
             animation: float 6s ease-in-out infinite;
         }
         
-        .float-1 { width: 80px; height: 80px; top: 20%; left: 5%; animation-delay: 0s; }
-        .float-2 { width: 50px; height: 50px; top: 60%; right: 10%; animation-delay: 1s; }
-        .float-3 { width: 70px; height: 70px; bottom: 15%; left: 15%; animation-delay: 2s; }
+        .float-1 {
+            width: 80px;
+            height: 80px;
+            top: 20%;
+            left: 5%;
+            animation-delay: 0s;
+        }
+        
+        .float-2 {
+            width: 50px;
+            height: 50px;
+            top: 60%;
+            right: 10%;
+            animation-delay: 1s;
+        }
+        
+        .float-3 {
+            width: 70px;
+            height: 70px;
+            bottom: 15%;
+            left: 15%;
+            animation-delay: 2s;
+        }
         
         @keyframes float {
             0% { transform: translateY(0) rotate(0deg); }
@@ -819,113 +841,21 @@
             100% { transform: translateY(0) rotate(0deg); }
         }
         
-        /* Section Title */
-        .section-title {
-            text-align: center;
-            margin: 60px 0 40px;
-            font-size: 32px;
-            color: #FF9E44;
-            position: relative;
-            padding-bottom: 15px;
-        }
-        
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 3px;
-            background: #FF9E44;
-            border-radius: 3px;
-        }
-        
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 40px 0;
-            margin-top: 80px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        footer p {
-            opacity: 0.7;
-            font-size: 14px;
-        }
-
-        /* Toast Notification */
-        .toast {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: rgba(255, 255, 255, 0.9);
-            color: #333;
-            padding: 15px 25px;
-            border-radius: 8px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transform: translateY(100px);
-            opacity: 0;
-            transition: all 0.3s ease;
-            z-index: 1000;
-        }
-        
-        .toast.show {
-            transform: translateY(0);
-            opacity: 1;
-        }
-        
-        .toast i { font-size: 20px; }
-        .toast .fa-check-circle { color: #4CAF50; }
-        .toast .fa-exclamation-circle { color: #F44336; }
-
-        /* User Welcome & Pop-up Styles */
-        .welcome-message {
-            font-weight: 500;
-            font-size: 16px;
-            cursor: pointer;
-        }
-
-        #user-profile-container .dropdown-content {
-            top: calc(100% + 15px);
-            right: 0;
-            background: rgba(30, 30, 30, 0.9);
-            color: #fff;
-            min-width: 280px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 15px;
-        }
-
-        #user-profile-container .dropdown-content.show-via-click {
-             display: block;
-        }
-
-        #user-info-popup ul { list-style: none; padding: 0; margin: 0; }
-        #user-info-popup ul li { padding: 8px 0; font-size: 14px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); display: flex; }
-        #user-info-popup ul li:last-child { border-bottom: none; }
-        #user-info-popup ul li strong { color: #FF9E44; display: inline-block; min-width: 80px; margin-right: 10px; }
-        
-        /* --- START: MODIFIED COUPON SECTION STYLES --- */
-        
-        /* Container for horizontal scrolling */
+        /* Coupon Section Styles */
         .coupon-display-section {
             display: flex;
-            flex-wrap: nowrap; /* Prevents cards from wrapping to the next line */
-            justify-content: flex-start; /* Aligns cards to the left */
+            flex-wrap: nowrap;
+            justify-content: flex-start;
             gap: 25px;
             padding: 10px;
-            padding-bottom: 20px; /* Space for scrollbar */
-            margin-top: 40px; /* Reduced gap from hero section */
-            overflow-x: auto; /* Enables horizontal scrolling */
-            -webkit-overflow-scrolling: touch; /* Smooth scrolling on mobile */
-            scrollbar-width: thin; /* For Firefox */
-            scrollbar-color: var(--primary-accent) rgba(255, 255, 255, 0.1); /* For Firefox */
+            padding-bottom: 20px;
+            margin-top: 40px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary-accent) rgba(255, 255, 255, 0.1);
         }
 
-        /* Custom Scrollbar for Webkit browsers (Chrome, Safari) */
         .coupon-display-section::-webkit-scrollbar {
             height: 8px;
         }
@@ -941,15 +871,14 @@
             background: var(--secondary-accent);
         }
         
-        /* Smaller card size */
         .coupon-wrapper {
             position: relative;
-            width: 290px; /* Reduced width */
-            height: 185px; /* Reduced height */
+            width: 290px;
+            height: 185px;
             border-radius: 18px;
             overflow: hidden;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
-            flex-shrink: 0; /* Prevents cards from shrinking */
+            flex-shrink: 0;
         }
 
         .coupon-wrapper::before {
@@ -1041,7 +970,6 @@
             opacity: 1;
         }
         
-        /* Adjusted font sizes for smaller cards */
         .coupon-card .logo { font-weight: 700; font-size: 1.1rem; color: var(--primary-accent); }
         .coupon-card .code { font-weight: 600; font-size: 2.4rem; margin: 8px 0; text-shadow: 0 0 15px rgba(255, 255, 255, 0.5); }
         .coupon-card .description { font-weight: 400; font-size: 0.9rem; opacity: 0.85; max-width: 90%; line-height: 1.4; text-align: center; }
@@ -1054,36 +982,634 @@
         .loyal20 .background-image { background-image: url('https://image.lexica.art/full_webp/48455174-a034-4216-9ca8-3a81768c8194'); }
         .birthday10 .background-image { background-image: url('https://image.lexica.art/full_webp/6182c474-32d8-4a94-b258-294c7304b77d'); }
         .flat50 .background-image { background-image: url('https://image.lexica.art/full_webp/2a6bf957-c452-4e41-b855-6b47c0b96871'); }
-        /* --- END: MODIFIED COUPON SECTION STYLES --- */
+        
+        /* Support Page Styles */
+        .support-section {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 40px;
+            margin: 60px 0;
+            backdrop-filter: blur(10px);
+        }
+        
+        .support-section h2 {
+            font-size: 32px;
+            margin-bottom: 20px;
+            color: #FF9E44;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .support-section h2 i {
+            font-size: 28px;
+        }
+        
+        .support-section p {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        
+        .support-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .support-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .support-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        
+        .support-card i {
+            font-size: 36px;
+            color: #FF9E44;
+            margin-bottom: 15px;
+        }
+        
+        .support-card h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #FF9E44;
+        }
+        
+        .support-card p {
+            font-size: 14px;
+            opacity: 0.8;
+            margin-bottom: 0;
+        }
+        
+        .support-content {
+            display: none;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 30px;
+            margin-top: 30px;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .support-content.active {
+            display: block;
+        }
+        
+        .support-content h3 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #FF9E44;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .faq-item {
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 20px;
+        }
+        
+        .faq-question {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #FF9E44;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .faq-answer {
+            font-size: 16px;
+            line-height: 1.6;
+            opacity: 0.9;
+            display: none;
+        }
+        
+        .faq-item.active .faq-answer {
+            display: block;
+        }
+        
+        .travel-advisory-list {
+            list-style-type: none;
+        }
+        
+        .travel-advisory-list li {
+            margin-bottom: 15px;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .travel-advisory-list li:before {
+            content: "•";
+            color: #FF9E44;
+            font-size: 20px;
+            position: absolute;
+            left: 0;
+        }
+        
+        /* Search Suggestions */
+        .search-suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 0 0 15px 15px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            z-index: 100;
+            display: none;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .search-suggestions.active {
+            display: block;
+        }
+        
+        .suggestion-item {
+            padding: 10px 15px;
+            cursor: pointer;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .suggestion-item:hover {
+            background: rgba(255, 158, 68, 0.1);
+        }
+        
+        .suggestion-item i {
+            color: #FF9E44;
+        }
+        
+        /* AI Chat Widget */
+        .chat-widget {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        
+        .chat-button {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #FF9E44;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 158, 68, 0.4);
+            transition: all 0.3s ease;
+        }
+        
+        .chat-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(255, 158, 68, 0.6);
+        }
+        
+        .chat-container {
+            position: absolute;
+            bottom: 70px;
+            right: 0;
+            width: 350px;
+            height: 450px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .chat-container.active {
+            display: flex;
+        }
+        
+        .chat-header {
+            background: #FF9E44;
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .chat-header h3 {
+            margin: 0;
+            font-size: 16px;
+        }
+        
+        .close-chat {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .message {
+            max-width: 80%;
+            padding: 10px 15px;
+            border-radius: 15px;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+        
+        .user-message {
+            align-self: flex-end;
+            background: #FF9E44;
+            color: white;
+            border-bottom-right-radius: 5px;
+        }
+        
+        .ai-message {
+            align-self: flex-start;
+            background: #f0f0f0;
+            color: #333;
+            border-bottom-left-radius: 5px;
+        }
+        
+        .chat-input {
+            display: flex;
+            padding: 15px;
+            border-top: 1px solid #eee;
+            gap: 10px;
+        }
+        
+        .chat-input input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            outline: none;
+        }
+        
+        .send-button {
+            background: #FF9E44;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Login/Signup Form Styles from Index */
+        .form-row {
+            display: flex;
+            gap: 15px;
+            width: 100%;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .form-group select option {
+            background: #333;
+        }
+        
+        .form-group select:focus {
+            outline: none;
+            border-color: #FF9E44;
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .toast i { font-size: 20px; }
+        .toast .fa-check-circle { color: #4CAF50; }
+        .toast .fa-exclamation-circle { color: #F44336; }
+
+        /* BOOKING PAGE STYLES */
+        .booking-container {
+            max-width: 600px;
+            margin: 40px auto;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            animation: fadeUp 0.5s ease;
+        }
+
+        .booking-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .booking-header h1 {
+            color: #FF9E44;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .booking-header p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.1rem;
+        }
+
+        .booking-form .form-group {
+            margin-bottom: 25px;
+        }
+
+        .booking-form label {
+            display: block;
+            margin-bottom: 8px;
+            color: #FF9E44;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .booking-form input {
+            width: 100%;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            color: #fff;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .booking-form input:focus {
+            outline: none;
+            border-color: #FF9E44;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .booking-form input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .duration-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .duration-btn {
+            flex: 1;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .duration-btn.active {
+            background: #FF9E44;
+            color: white;
+            border-color: #FF9E44;
+        }
+
+        .date-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-back {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-next {
+            background: #FF9E44;
+            color: white;
+        }
+
+        .btn-back:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-next:hover {
+            background: #FF8A24;
+            transform: translateY(-2px);
+        }
+
+        /* NEW STYLES FOR SMOOTH SCROLLING AND AI CHAT BOT */
+        
+        /* Smooth scrolling for support sections */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* Highlight active support section */
+        .support-content.active {
+            animation: highlightSection 0.5s ease;
+        }
+        
+        @keyframes highlightSection {
+            0% { background-color: rgba(255, 158, 68, 0.1); }
+            100% { background-color: rgba(255, 255, 255, 0.05); }
+        }
+        
+        /* Support section indicators */
+        .support-cards .support-card.active {
+            border: 2px solid #FF9E44;
+            transform: scale(1.05);
+        }
+        
+        /* Improved AI chat styling */
+        .chat-header {
+            background: linear-gradient(to right, #FF9E44, #FF6B6B);
+        }
+        
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+        }
+        
+        .typing-dots {
+            display: flex;
+            gap: 3px;
+        }
+        
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #FF9E44;
+            animation: typing 1.4s infinite ease-in-out;
+        }
+        
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+        
+        @keyframes typing {
+            0%, 80%, 100% { transform: scale(0.8); opacity: 0.5; }
+            40% { transform: scale(1); opacity: 1; }
+        }
+        
+        /* Quick reply buttons */
+        .quick-replies {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        
+        .quick-reply {
+            background: rgba(255, 158, 68, 0.1);
+            border: 1px solid rgba(255, 158, 68, 0.3);
+            border-radius: 15px;
+            padding: 5px 10px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .quick-reply:hover {
+            background: rgba(255, 158, 68, 0.2);
+        }
+        
+        /* Support navigation highlights */
+        .support-option.active {
+            background: #FF9E44;
+            color: white;
+        }
 
         /* Responsive Design */
-        @media (max-width: 992px) {
-            .features { flex-direction: column; }
-            .feature { margin-bottom: 30px; }
-            nav ul { gap: 15px; }
-            .search-bar { width: 200px; }
-        }
-        
-        @media (max-width: 768px) {
-            header { flex-direction: column; gap: 20px; }
-            .logo { font-size: 28px; }
-            nav ul { flex-wrap: wrap; justify-content: center; }
-            .hero h1 { font-size: 36px; }
-            .hero p { font-size: 16px; }
-            .search-bar { width: 100%; max-width: 300px; }
-            .profile-section { flex-direction: column; gap: 10px; }
-            .login-btn { width: 100%; justify-content: center; }
-            .features-grid { grid-template-columns: 1fr; }
-            .contact-methods { grid-template-columns: 1fr; }
-            .action-buttons { flex-direction: column; }
-        }
-        
-        @media (max-width: 576px) {
-            .hero { padding: 60px 0; }
-            .hero h1 { font-size: 28px; }
-            .feature { padding: 20px; }
-            .about-section, .contact-section { padding: 25px; }
-            .section-title { font-size: 28px; }
+        @media (max-width: 900px) {
+            .features {
+                flex-direction: column;
+            }
+            
+            header {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .hero {
+                padding: 60px 0;
+            }
+            
+            .hero h1 {
+                font-size: 36px;
+            }
+            
+            .profile-section {
+                margin-top: 15px;
+            }
+            
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .search-bar {
+                width: 100%;
+                max-width: 400px;
+            }
+            
+            .results-grid, .features-grid, .contact-methods, .support-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .login-box {
+                padding: 30px 20px;
+            }
+            
+            .chat-container {
+                width: 300px;
+                height: 400px;
+            }
+            
+            .booking-container {
+                margin: 20px;
+                padding: 30px 20px;
+            }
+            
+            .date-inputs {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -1096,52 +1622,50 @@
         <header>
             <div class="logo-container">
                 <a href="#" class="logo">
-                    <i class="fas fa-map-marked-alt logo-icon"></i>
-                    Wanderlo
+                    <i class="fas fa-compass logo-icon"></i>Wanderlo
                 </a>
             </div>
             
-            <div class="search-bar">
-                <i class="fas fa-search"></i>
-                <input type="text" placeholder="Search for destinations...">
+            <div class="search-bar" style="position: relative;">
+                <i class="fas fa-search" id="searchButton"></i>
+                <input type="text" id="searchInput" placeholder="Search destinations, hotels, experiences...">
+                <div class="search-suggestions" id="searchSuggestions">
+                    </div>
             </div>
             
             <nav>
                 <ul>
-                    <li><a href="#" class="nav-link active" data-target="home">Home</a></li>
-                    <li><a href="#" class="nav-link" data-target="about">About</a></li>
-                    <li><a href="#" class="nav-link" data-target="contact">Contact</a></li>
+                    <li><a href="#" class="nav-link active" data-page="home-page">Home</a></li>
+                    <li><a href="#" class="nav-link" data-page="about-page">About</a></li>
+                    <li><a href="#" class="nav-link" data-page="contact-page">Contact Us</a></li>
                     <li class="dropdown">
-                        <a href="#">Support <i class="fas fa-chevron-down"></i></a>
+                        <a href="#" class="nav-link" data-page="support-page">Support</a>
                         <div class="dropdown-content">
-                            <a href="#">Help Center</a>
-                            <a href="#">FAQ</a>
-                            <a href="#">Travel Advisory</a>
-                            <a href="#">Feedback</a>
+                            <a href="#" class="support-option" data-support="help-center"><i class="fas fa-life-ring"></i> Help Center</a>
+                            <a href="#" class="support-option" data-support="faq"><i class="fas fa-question-circle"></i> FAQ</a>
+                            <a href="#" class="support-option" data-support="travel-advisory"><i class="fas fa-exclamation-triangle"></i> Travel Advisory</a>
+                            <a href="#" class="support-option" data-support="feedback"><i class="fas fa-comment-dots"></i> Feedback</a>
                         </div>
                     </li>
                 </ul>
             </nav>
             
             <div class="profile-section">
-                <div class="profile-icon">
-                    <i class="fas fa-user"></i>
-                </div>
-                <button class="login-btn" id="loginBtn">
-                    <i class="fas fa-sign-in-alt"></i> Log In
+                <button class="login-btn" id="loginButton">
+                    <i class="fas fa-user"></i> Login
                 </button>
             </div>
         </header>
         
-        <div class="page-section active" id="home">
+        <section id="home-page" class="page-section active">
             <section class="hero">
-                <h1>Discover Your Next Adventure</h1>
-                <p>Explore the world with personalized travel guides and curated experiences. From hidden gems to popular attractions, we help you create unforgettable memories.</p>
-                <a href="page 2.html" class="cta-button" id="bookNowBtn" style="text-decoration: none; display: inline-block;">
-                    <i class="fas fa-plane"></i> BOOK NOW
+                <h1>FIND YOUR TRAVEL GUIDE</h1>
+                <p>Discover Hotels, Travel & Local Experiences. Your one-step solution for travel planning. Expert guidance for your journey to the world's most amazing destinations.</p>
+                <a href="page 2.html" class="cta-button" id="bookNowButton" style="text-decoration: none; display: inline-block;">
+                    BOOK NOW →
                 </a>
             </section>
-
+            
             <section>
                 <h2 class="section-title">Exclusive Offers</h2>
                 <div class="coupon-display-section">
@@ -1155,124 +1679,117 @@
                     <div class="coupon-wrapper flat50"> <div class="background-image"></div> <div class="coupon-card"> <div class="logo">Wanderlo</div> <div class="code">FLAT50</div> <div class="description">₹50 off on any booking</div> </div> </div>
                 </div>
             </section>
-            <section class="features">
+            
+            <h2 class="section-title">Why Choose Us</h2>
+            
+            <div class="features">
                 <div class="feature">
-                    <i class="fas fa-route"></i>
-                    <h3>Custom Itineraries</h3>
-                    <p>Plan your perfect trip with personalized day-by-day itineraries based on your interests and preferences.</p>
+                    <i class="fas fa-hotel"></i>
+                    <h3>Luxury Hotels</h3>
+                    <p>Discover the best accommodations with our curated selection of luxury hotels around the world.</p>
                 </div>
+                
                 <div class="feature">
                     <i class="fas fa-map-marked-alt"></i>
                     <h3>Local Guides</h3>
-                    <p>Connect with experienced local guides who can show you the hidden treasures of your destination.</p>
+                    <p>Experience destinations like a local with our expert guides who know all the hidden gems.</p>
                 </div>
+                
                 <div class="feature">
-                    <i class="fas fa-wallet"></i>
-                    <h3>Budget Planning</h3>
-                    <p>Manage your travel expenses with our built-in budget planner and cost estimation tools.</p>
+                    <i class="fas fa-pencil-alt"></i>
+                    <h3>Tailored Experiences</h3>
+                    <p>Customized travel plans designed specifically for your preferences and interests.</p>
                 </div>
-            </section>
+            </div>
             
             <section class="search-results" id="searchResults">
-                <h2><i class="fas fa-search"></i> Popular Destinations</h2>
+                <h2><i class="fas fa-search"></i> Search Results for: <span id="searchQuery">#Manali</span></h2>
                 <div class="results-grid">
-                    <div class="result-card">
-                        <div class="result-image">
-                            <img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80" alt="Bali">
-                        </div>
-                        <div class="result-content">
-                            <h3>Bali, Indonesia</h3>
-                            <p>Experience the perfect blend of culture, beaches, and nightlife in the Island of Gods.</p>
-                            <div class="result-meta">
-                                <span><i class="fas fa-dollar-sign"></i> $$$</span>
-                                <span><i class="fas fa-clock"></i> 7-10 days</span>
-                            </div>
-                            <div class="hashtags">
-                                <span class="hashtag">#beach</span>
-                                <span class="hashtag">#culture</span>
-                            </div>
-                        </div>
                     </div>
-                    
-                    <div class="result-card">
-                        <div class="result-image">
-                            <img src="https://images.unsplash.com/photo-1535157412991-2ef801c1748b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1664&q=80" alt="Kyoto">
-                        </div>
-                        <div class="result-content">
-                            <h3>Kyoto, Japan</h3>
-                            <p>Discover ancient temples, traditional gardens, and the beautiful cherry blossoms.</p>
-                            <div class="result-meta">
-                                <span><i class="fas fa-dollar-sign"></i> $$$$</span>
-                                <span><i class="fas fa-clock"></i> 5-7 days</span>
-                            </div>
-                            <div class="hashtags">
-                                <span class="hashtag">#culture</span>
-                                <span class="hashtag">#history</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="result-card">
-                        <div class="result-image">
-                            <img src="https://images.unsplash.com/photo-1506970840772-503770eb8c51?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80" alt="Swiss Alps">
-                        </div>
-                        <div class="result-content">
-                            <h3>Swiss Alps</h3>
-                            <p>Breathtaking mountain scenery, charming villages, and world-class skiing await.</p>
-                            <div class="result-meta">
-                                <span><i class="fas fa-dollar-sign"></i> $$$$</span>
-                                <span><i class="fas fa-clock"></i> 5-12 days</span>
-                            </div>
-                            <div class="hashtags">
-                                <span class="hashtag">#mountains</span>
-                                <span class="hashtag">#adventure</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </section>
-        </div>
+        </section>
         
-        <div class="page-section" id="about">
+        <section id="about-page" class="page-section">
+            <section class="hero">
+                <h1>ABOUT WANDERLO</h1>
+                <p>Your one-step solution for travel planning. Expert guidance for your journey to the world's most amazing destinations.</p>
+            </section>
+            
             <div class="about-content">
-                <h2 class="section-title">About Wanderlo</h2>
-                
-                <div class="about-section">
-                    <h2><i class="fas fa-info-circle"></i> Our Story</h2>
-                    <p>Wanderlo was founded in 2018 by a group of passionate travelers who wanted to make exploring the world easier and more accessible for everyone. We noticed that planning a trip could be overwhelming with so many options and information scattered across the internet.</p>
-                    <p>Our mission is to simplify travel planning by providing personalized recommendations, curated itineraries, and tools to manage your budget—all in one place.</p>
-                </div>
-                
-                <div class="about-section">
-                    <h2><i class="fas fa-bullseye"></i> Our Mission</h2>
-                    <p>We believe that travel has the power to broaden horizons, create connections, and transform lives. Our goal is to empower people to explore the world confidently and responsibly.</p>
+                <section class="about-section">
+                    <h2><i class="fas fa-rocket"></i> Our Mission</h2>
+                    <p>Wanderlo is an AI-powered budget trip planner designed to revolutionize how students and young travelers explore the world. We combine cutting-edge technology with local expertise to create personalized, authentic, and affordable travel experiences.</p>
+                    <p>Our platform connects travelers with verified local guides, helps discover hidden gems, and creates meaningful travel connections through our innovative social features.</p>
                     
                     <div class="features-grid">
                         <div class="feature-card">
-                            <i class="fas fa-globe-americas"></i>
-                            <h3>Global Reach</h3>
-                            <p>With guides for over 500 destinations worldwide, we help you explore both popular spots and hidden gems.</p>
+                            <i class="fas fa-wallet"></i>
+                            <h3>Budget-Friendly</h3>
+                            <p>Custom travel plans based on your budget, time, and preferences with dynamic cost optimization using local data.</p>
                         </div>
                         
                         <div class="feature-card">
-                            <i class="fas fa-hand-holding-heart"></i>
-                            <h3>Sustainable Travel</h3>
-                            <p>We promote responsible tourism practices that benefit local communities and minimize environmental impact.</p>
-                        </div>
-                        
-                        <div class="feature-card">
-                            <i class="fas fa-users"></i>
-                            <h3>Community Driven</h3>
-                            <p>Our platform is powered by a community of travel experts and enthusiasts who share their knowledge and experiences.</p>
+                            <i class="fas fa-shield-alt"></i>
+                            <h3>Verified Guides</h3>
+                            <p>All our local guides and vendors are thoroughly vetted and rated to ensure authentic and safe experiences.</p>
                         </div>
                     </div>
-                </div>
+                </section>
+                
+                <section class="about-section">
+                    <h2><i class="fas fa-cogs"></i> How It Works</h2>
+                    <p>Wanderlo uses advanced AI algorithms to create personalized travel itineraries that match your preferences and budget. Our platform integrates with multiple APIs to provide real-time information on accommodations, transportation, and local experiences.</p>
+                    
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <i class="fas fa-brain"></i>
+                            <h3>AI Planning</h3>
+                            <p>Our AI analyzes your preferences to create optimized travel plans with the best routes, stays, and experiences.</p>
+                        </div>
+                        
+                        <div class="feature-card">
+                            <i class="fas fa-map-marked-alt"></i>
+                            <h3>Local Discovery</h3>
+                            <p>Discover hidden gems and local markets that typical tourists miss, with geo-tagged recommendations.</p>
+                        </div>
+                        
+                        <div class="feature-card">
+                            <i class="fas fa-comments"></i>
+                            <h3>Social Integration</h3>
+                            <p>Share your travel stories, connect with other travelers, and build a community of travel enthusiasts.</p>
+                        </div>
+                    </div>
+                </section>
+                
+                <section class="about-section">
+                    <h2><i class="fas fa-handshake"></i> Partnerships</h2>
+                    <p>We collaborate with local vendors, hotels, and experience providers to bring you the best travel options at affordable prices. Our partners are carefully selected to ensure quality and authenticity.</p>
+                    
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <i class="fas fa-hotel"></i>
+                            <h3>Accommodation Partners</h3>
+                            <p>From budget hostels to boutique hotels, we partner with accommodations that offer the best value.</p>
+                        </div>
+                        
+                        <div class="feature-card">
+                            <i class="fas fa-utensils"></i>
+                            <h3>Local Experiences</h3>
+                            <p>Authentic culinary experiences, workshops, and cultural activities with local experts.</p>
+                        </div>
+                    </div>
+                </section>
             </div>
-        </div>
+        </section>
         
-        <div class="page-section" id="contact">
+        <section id="contact-page" class="page-section">
+            <section class="hero">
+                <h1>CONTACT US</h1>
+                <p>Get in touch with our team for any questions, support, or partnership opportunities.</p>
+            </section>
+            
             <div class="contact-section">
-                <h2><i class="fas fa-envelope"></i> Contact Us</h2>
+                <h2><i class="fas fa-envelope"></i> Get In Touch</h2>
                 <p>Have questions or need assistance? We're here to help! Reach out to our team through any of the following methods.</p>
                 
                 <div class="contact-methods">
@@ -1298,32 +1815,155 @@
                 <div class="contact-form">
                     <h3>Send us a Message</h3>
                     
-                    <form>
+                    <form id="contactForm">
                         <div class="form-group">
                             <label for="name">Your Name</label>
-                            <input type="text" id="name" placeholder="Enter your name">
+                            <input type="text" id="name" placeholder="Enter your name" required>
                         </div>
                         
                         <div class="form-group">
                             <label for="email">Email Address</label>
-                            <input type="email" id="email" placeholder="Enter your email">
+                            <input type="email" id="email" placeholder="Enter your email" required>
                         </div>
                         
                         <div class="form-group">
                             <label for="message">Message</label>
-                            <textarea id="message" placeholder="How can we help you?"></textarea>
+                            <textarea id="message" placeholder="How can we help you?" required></textarea>
                         </div>
                         
                         <button type="submit" class="submit-btn">Send Message</button>
                     </form>
                 </div>
             </div>
-        </div>
+        </section>
         
-        <div class="page-section" id="login">
+        <section id="support-page" class="page-section">
+            <section class="hero">
+                <h1>SUPPORT CENTER</h1>
+                <p>Find answers to common questions, travel advisories, and provide feedback to help us improve.</p>
+            </section>
+            
+            <div class="support-section">
+                <h2><i class="fas fa-headset"></i> How Can We Help You?</h2>
+                <p>Select a category below to find the information you need or to provide feedback about your experience.</p>
+                
+                <div class="support-cards">
+                    <div class="support-card" data-support="help-center">
+                        <i class="fas fa-life-ring"></i>
+                        <h3>Help Center</h3>
+                        <p>Get assistance with booking, payments, and account issues.</p>
+                    </div>
+                    
+                    <div class="support-card" data-support="faq">
+                        <i class="fas fa-question-circle"></i>
+                        <h3>Frequently Asked Questions</h3>
+                        <p>Find answers to the most common questions about Wanderlo.</p>
+                    </div>
+                    
+                    <div class="support-card" data-support="travel-advisory">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h3>Travel Advisory</h3>
+                        <p>Important information about travel restrictions and safety.</p>
+                    </div>
+                    
+                    <div class="support-card" data-support="feedback">
+                        <i class="fas fa-comment-dots"></i>
+                        <h3>Feedback</h3>
+                        <p>Share your experience and suggestions to help us improve.</p>
+                    </div>
+                </div>
+                
+                <div id="help-center-content" class="support-content active">
+                    <h3><i class="fas fa-life-ring"></i> Help Center</h3>
+                    <p>Our Help Center provides comprehensive assistance for all aspects of using Wanderlo. If you can't find what you're looking for, please contact our support team.</p>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question">How do I book a trip? <i class="fas fa-chevron-down"></i></div>
+                        <div class="faq-answer">
+                            <p>To book a trip, simply search for your destination, select your preferred dates, and choose from available hotels and experiences. Follow the on-screen instructions to complete your booking.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question">What payment methods do you accept? <i class="fas fa-chevron-down"></i></div>
+                        <div class="faq-answer">
+                            <p>We accept all major credit cards, debit cards, PayPal, and bank transfers. Some regions may have additional payment options available.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="faq-content" class="support-content">
+                    <h3><i class="fas fa-question-circle"></i> Frequently Asked Questions</h3>
+                    <p>Here are answers to some of the most common questions we receive from our users.</p>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question">Is Wanderlo available internationally? <i class="fas fa-chevron-down"></i></div>
+                        <div class="faq-answer">
+                            <p>Yes, Wanderlo offers travel services in over 50 countries worldwide. We're continuously expanding our destinations to provide more options for our users.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="travel-advisory-content" class="support-content">
+                    <h3><i class="fas fa-exclamation-triangle"></i> Travel Advisory</h3>
+                    <p>Stay informed about important travel information that may affect your plans.</p>
+                    
+                    <h4>General Travel Tips</h4>
+                    <ul class="travel-advisory-list">
+                        <li>Always carry identification and important documents.</li>
+                        <li>Purchase travel insurance for international trips.</li>
+                    </ul>
+                </div>
+                
+                <div id="feedback-content" class="support-content">
+                    <h3><i class="fas fa-comment-dots"></i> Share Your Feedback</h3>
+                    <p>We value your opinion! Please share your experience with Wanderlo to help us improve our services.</p>
+                    
+                    <div class="contact-form">
+                        <form id="feedbackForm">
+                             <div class="form-group">
+                                <label for="feedback-name">Your Name</label>
+                                <input type="text" id="feedback-name" placeholder="Enter your name" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="feedback-email">Email Address</label>
+                                <input type="email" id="feedback-email" placeholder="Enter your email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="feedback-message">Your Feedback</label>
+                                <textarea id="feedback-message" placeholder="Please share your feedback in detail" required rows="5"></textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="feedback-rating">Overall Rating</label>
+                                <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                                    <span style="font-size: 24px; color: #ccc; cursor: pointer;" data-rating="1">★</span>
+                                    <span style="font-size: 24px; color: #ccc; cursor: pointer;" data-rating="2">★</span>
+                                    <span style="font-size: 24px; color: #ccc; cursor: pointer;" data-rating="3">★</span>
+                                    <span style="font-size: 24px; color: #ccc; cursor: pointer;" data-rating="4">★</span>
+                                    <span style="font-size: 24px; color: #ccc; cursor: pointer;" data-rating="5">★</span>
+                                </div>
+                                <input type="hidden" id="feedback-rating-value" value="0">
+                                <div id="rating-text" style="font-size: 14px; color: #FF9E44;">Please rate your experience</div>
+                            </div>
+                            
+                            <button type="submit" class="submit-btn">Submit Feedback</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="login-page" class="page-section">
+            <section class="hero">
+                <h1>WELCOME BACK</h1>
+                <p>Sign in to access your account and continue your travel planning journey.</p>
+            </section>
+            
             <div class="login-container">
                 <div class="login-box">
-                    <h2>Log In to Your Account</h2>
+                    <h2>Login to Your Account</h2>
                     
                     <div class="social-login">
                         <div class="social-btn">
@@ -1363,17 +2003,22 @@
                             <a href="#" class="forgot-password">Forgot Password?</a>
                         </div>
                         
-                        <button type="submit" class="submit-btn">Log In</button>
+                        <button type="submit" class="submit-btn">Sign In</button>
                     </form>
                     
                     <div class="login-footer">
-                        Don't have an account? <a href="#" id="showSignupLink">Sign up now</a>
+                        <p>Don't have an account? <a href="#" id="showSignupLink">Sign up now</a></p>
                     </div>
                 </div>
             </div>
-        </div>
-
-        <div class="page-section" id="signup">
+        </section>
+        
+        <section id="signup-page" class="page-section">
+            <section class="hero">
+                <h1>CREATE YOUR ACCOUNT</h1>
+                <p>Join Wanderlo today and start planning your dream vacations with ease.</p>
+            </section>
+            
             <div class="login-container">
                 <div class="login-box">
                     <h2>Create Your Account</h2>
@@ -1425,22 +2070,92 @@
                     </form>
                     
                     <div class="login-footer">
-                        Already have an account? <a href="#" id="showLoginLink">Log In</a>
+                        <p>Already have an account? <a href="#" id="showLoginLink">Log In</a></p>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
         
-        <footer>
-            <p>&copy; 2025 Wanderlo. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
-        </footer>
+        <section id="booking-page" class="page-section">
+            <div class="booking-container">
+                <div class="booking-header">
+                    <h1>Plan Your Trip Details</h1>
+                    <p>Tell us a bit about your upcoming adventure to get started.</p>
+                </div>
+
+                <form id="trip-form" class="booking-form">
+                    <div class="form-group">
+                        <label for="travellers">No. of Travellers</label>
+                        <input type="number" id="travellers" name="travellers" min="1" max="20" value="2" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="budget">Enter Your Budget (Rupees)</label>
+                        <input type="number" id="budget" name="budget" min="100" step="100" placeholder="Enter your budget" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Trip Duration (days)</label>
+                        <div class="duration-buttons">
+                            <div class="duration-btn active" data-days="2">2 Days</div>
+                            <div class="duration-btn" data-days="5">5 Days</div>
+                            <div class="duration-btn" data-days="7">7 Days</div>
+                            <div class="duration-btn" data-days="10">10+ Days</div>
+                        </div>
+                        <input type="hidden" id="duration" name="duration" value="2">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Travel Dates</label>
+                        <div class="date-inputs">
+                            <div>
+                                <label for="start-date" style="font-size: 0.9rem; color: rgba(255, 255, 255, 0.7);">Start Date</label>
+                                <input type="date" id="start-date" name="start-date" required>
+                            </div>
+                            <div>
+                                <label for="end-date" style="font-size: 0.9rem; color: rgba(255, 255, 255, 0.7);">End Date</label>
+                                <input type="date" id="end-date" name="end-date" readonly>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="button-group">
+                        <button type="button" class="btn btn-back" id="backToHome">Back</button>
+                        <button type="submit" class="btn btn-next">Next →</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </div>
+    
+    <div class="chat-widget">
+        <div class="chat-container" id="chatContainer">
+            <div class="chat-header">
+                <h3>Wanderlo AI Assistant</h3>
+                <button class="close-chat" id="closeChat">×</button>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                <div class="message ai-message">
+                    Hello! I'm your Wanderlo AI assistant. How can I help you with your travel plans today?
+                </div>
+            </div>
+            <div class="chat-input">
+                <input type="text" id="chatInput" placeholder="Type your message...">
+                <button class="send-button" id="sendMessage">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+        <div class="chat-button" id="chatButton">
+            <i class="fas fa-robot"></i>
+        </div>
     </div>
     
     <div class="toast" id="toast">
         <i class="fas fa-check-circle"></i>
         <span id="toastMessage">Message sent!</span>
     </div>
-    
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // --- Pre-populate session storage with default user data for easy login ---
@@ -1455,28 +2170,57 @@
             // --- Element Selections ---
             const navLinks = document.querySelectorAll('.nav-link');
             const pageSections = document.querySelectorAll('.page-section');
-            const loginBtn = document.getElementById('loginBtn');
+            const loginBtn = document.getElementById('loginButton');
             const showSignupLink = document.getElementById('showSignupLink');
             const showLoginLink = document.getElementById('showLoginLink');
             const signupForm = document.getElementById('signupForm');
             const loginForm = document.getElementById('loginForm');
             const toast = document.getElementById('toast');
             const toastMessage = document.getElementById('toastMessage');
+            const searchInput = document.getElementById('searchInput');
+            const searchSuggestions = document.getElementById('searchSuggestions');
+            const searchResults = document.getElementById('searchResults');
+            const searchQuery = document.getElementById('searchQuery');
+            const chatButton = document.getElementById('chatButton');
+            const chatContainer = document.getElementById('chatContainer');
+            const closeChat = document.getElementById('closeChat');
+            const chatMessages = document.getElementById('chatMessages');
+            const chatInput = document.getElementById('chatInput');
+            const sendMessage = document.getElementById('sendMessage');
+            const supportCards = document.querySelectorAll('.support-card');
+            const supportContents = document.querySelectorAll('.support-content');
+            const faqItems = document.querySelectorAll('.faq-item');
+            const feedbackForm = document.getElementById('feedbackForm');
+            const ratingStars = document.querySelectorAll('[data-rating]');
+            const ratingValue = document.getElementById('feedback-rating-value');
+            const ratingText = document.getElementById('rating-text');
+            const supportOptions = document.querySelectorAll('.support-option');
+            const backToHomeButton = document.getElementById('backToHome');
+            const tripForm = document.getElementById('trip-form');
+
+            // --- Search Data ---
+            const searchData = {
+                "manali": {
+                    name: "Manali, India",
+                    image: "https://images.unsplash.com/photo-1580548259487-abc7ce496c53?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80",
+                    description: "A beautiful hill station in the Himalayas known for its scenic beauty and adventure activities.",
+                    hashtags: ["#Manali", "#Mountains", "#Adventure"]
+                },
+                "goa": {
+                    name: "Goa, India",
+                    image: "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80",
+                    description: "Famous for its beaches, nightlife, and Portuguese heritage architecture.",
+                    hashtags: ["#Goa", "#Beach", "#Nightlife"]
+                },
+                "paris": {
+                    name: "Paris, France",
+                    image: "https://images.unsplash.com/photo-1502602898536-47ad22581b52?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=776&q=80",
+                    description: "The City of Light known for its art, fashion, gastronomy, and culture.",
+                    hashtags: ["#Paris", "#EiffelTower", "#Romance"]
+                }
+            };
 
             // --- Helper Functions ---
-
-            function calculateAge(dobString) {
-                if (!dobString) return null;
-                const dob = new Date(dobString);
-                const today = new Date();
-                let age = today.getFullYear() - dob.getFullYear();
-                const monthDifference = today.getMonth() - dob.getMonth();
-                if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < dob.getDate())) {
-                    age--;
-                }
-                return age;
-            }
-
             function showPage(pageId) {
                 pageSections.forEach(section => section.classList.remove('active'));
                 const targetPage = document.getElementById(pageId);
@@ -1484,7 +2228,7 @@
                     targetPage.classList.add('active');
                 }
                 navLinks.forEach(l => l.classList.remove('active'));
-                const activeLink = document.querySelector(`.nav-link[data-target="${pageId}"]`);
+                const activeLink = document.querySelector(`.nav-link[data-page="${pageId}"]`);
                 if (activeLink) {
                     activeLink.classList.add('active');
                 }
@@ -1502,154 +2246,275 @@
 
             function updateLoginStateUI() {
                 const isLoggedIn = sessionStorage.getItem('isLoggedIn');
-                const profileSection = document.querySelector('.profile-section');
-                let userProfileContainer = document.getElementById('user-profile-container');
-
                 if (isLoggedIn) {
-                    if (loginBtn) loginBtn.style.display = 'none';
-
-                    if (!userProfileContainer) {
-                        userProfileContainer = document.createElement('div');
-                        userProfileContainer.id = 'user-profile-container';
-                        userProfileContainer.className = 'dropdown';
-
-                        const welcomeMessage = document.createElement('span');
-                        welcomeMessage.id = 'welcome-message';
-                        welcomeMessage.className = 'welcome-message';
-
-                        const userInfoPopup = document.createElement('div');
-                        userInfoPopup.id = 'user-info-popup';
-                        userInfoPopup.className = 'dropdown-content';
-
-                        userProfileContainer.appendChild(welcomeMessage);
-                        userProfileContainer.appendChild(userInfoPopup);
-                        profileSection.appendChild(userProfileContainer);
-
-                        welcomeMessage.addEventListener('click', (e) => {
-                            e.stopPropagation();
-                            userInfoPopup.classList.toggle('show-via-click');
-                        });
-                    }
-
                     const userFirstName = sessionStorage.getItem('userFirstName');
-                    const userLName = sessionStorage.getItem('userLName');
-                    const userEmail = sessionStorage.getItem('userEmail');
-                    const userDOB = sessionStorage.getItem('userDOB');
-                    const userGender = sessionStorage.getItem('userGender');
-                    const age = calculateAge(userDOB);
-
-                    document.getElementById('welcome-message').textContent = `Welcome, ${userFirstName}`;
-                    
-                    const userInfoPopup = document.getElementById('user-info-popup');
-                    userInfoPopup.innerHTML = `
-                        <ul>
-                            <li><strong>Age:</strong> ${age !== null ? age : 'N/A'}</li>
-                            <li><strong>Name:</strong> ${userFirstName} ${userLName}</li>
-                            <li><strong>Email:</strong> ${userEmail}</li>
-                            <li><strong>DOB:</strong> ${userDOB}</li>
-                            <li><strong>Gender:</strong> ${userGender}</li>
-                        </ul>
-                    `;
+                    loginBtn.innerHTML = `<i class="fas fa-sign-out-alt"></i> Logout, ${userFirstName}`;
                 } else {
-                    if (loginBtn) loginBtn.style.display = 'flex';
-                    if (userProfileContainer) userProfileContainer.remove();
+                    loginBtn.innerHTML = '<i class="fas fa-user"></i> Login';
                 }
             }
             
-            // --- Event Listeners for Sign Up & Login Flow ---
+            // --- Search Functionality ---
+            function showSearchSuggestions(query) {
+                searchSuggestions.innerHTML = '';
+                if (query.length < 2) {
+                    searchSuggestions.classList.remove('active');
+                    return;
+                }
+                const matches = Object.keys(searchData).filter(key => key.toLowerCase().includes(query.toLowerCase()));
+                if (matches.length > 0) {
+                    matches.forEach(match => {
+                        const suggestionItem = document.createElement('div');
+                        suggestionItem.className = 'suggestion-item';
+                        suggestionItem.innerHTML = `<i class="fas fa-search"></i> <span>${searchData[match].name}</span>`;
+                        suggestionItem.addEventListener('click', () => { performSearch(match); });
+                        searchSuggestions.appendChild(suggestionItem);
+                    });
+                    searchSuggestions.classList.add('active');
+                } else {
+                    searchSuggestions.classList.remove('active');
+                }
+            }
+            
+            function performSearch(query) {
+                searchInput.value = query;
+                searchSuggestions.classList.remove('active');
+                if (searchData[query.toLowerCase()]) {
+                    const data = searchData[query.toLowerCase()];
+                    searchQuery.textContent = data.name;
+                    const resultsGrid = document.querySelector('#searchResults .results-grid');
+                    resultsGrid.innerHTML = `
+                        <div class="result-card">
+                            <div class="result-image">
+                                <img src="${data.image}" alt="${data.name}">
+                            </div>
+                            <div class="result-content">
+                                <h3>${data.name}</h3>
+                                <p>${data.description}</p>
+                                <div class="hashtags">
+                                    ${data.hashtags.map(tag => `<span class="hashtag">${tag}</span>`).join('')}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    searchResults.style.display = 'block';
+                    searchResults.scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+            
+            // --- Support Section Functionality ---
+            function showSupportContent(supportType) {
+                supportContents.forEach(content => content.classList.remove('active'));
+                supportCards.forEach(card => card.classList.remove('active'));
+                const activeCard = document.querySelector(`.support-card[data-support="${supportType}"]`);
+                if (activeCard) activeCard.classList.add('active');
+                const contentToShow = document.getElementById(`${supportType}-content`);
+                if (contentToShow) {
+                    contentToShow.classList.add('active');
+                    setTimeout(() => {
+                        contentToShow.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }, 100);
+                }
+            }
+            
+            // --- FAQ Functionality ---
+            function setupFAQ() {
+                faqItems.forEach(item => {
+                    const question = item.querySelector('.faq-question');
+                    question.addEventListener('click', () => {
+                        faqItems.forEach(otherItem => {
+                            if (otherItem !== item) otherItem.classList.remove('active');
+                        });
+                        item.classList.toggle('active');
+                    });
+                });
+            }
+            
+            // --- Rating Stars Functionality ---
+            function setupRatingStars() {
+                const ratings = { 1: "Poor", 2: "Fair", 3: "Good", 4: "Very Good", 5: "Excellent" };
+                ratingStars.forEach(star => {
+                    star.addEventListener('click', () => {
+                        const rating = parseInt(star.getAttribute('data-rating'));
+                        ratingValue.value = rating;
+                        ratingStars.forEach(s => {
+                            s.style.color = parseInt(s.getAttribute('data-rating')) <= rating ? '#FF9E44' : '#ccc';
+                        });
+                        ratingText.textContent = ratings[rating];
+                    });
+                });
+            }
+            
+         // --- AI Chat Functionality ---
+const botResponses = {
+    "hello": ["Hello! I'm Wanderlo AI Assistant. How can I help you?", "Hi there! Ready to plan your next adventure?"],
+    "help": ["I can help with: booking trips, finding destinations, travel tips, and coupon codes. What do you need?", "I'm here to assist with travel planning. What can I help you with?"],
+    "book": ["To book a trip, use the search bar to find your destination. I can also help you start by navigating to the booking page.", "Booking is easy! Search for a destination or I can guide you."],
+    "destination": ["Popular choices include Manali, Goa, Paris, and Bali. Where are you thinking of traveling?", "Tell me where you'd like to go, and I'll share details!"],
+    "coupon": ["We have several coupon codes! Check our homepage for offers like WELCOME10 or EARLY15.", "You can find all active codes on our homepage in the 'Exclusive Offers' section."],
+    "default": ["I'm not sure I understand. I can help with bookings, destinations, and coupons.", "Could you rephrase? I'm best with travel-related questions."]
+};
 
+function getRandomResponse(type) {
+    const responses = botResponses[type];
+    return responses[Math.floor(Math.random() * responses.length)];
+}
+
+function getBotResponse(message) {
+    message = message.toLowerCase();
+    if (message.includes('hello') || message.includes('hi')) return getRandomResponse('hello');
+    if (message.includes('help') || message.includes('support')) return getRandomResponse('help');
+    if (message.includes('book') || message.includes('plan')) return getRandomResponse('book');
+    if (message.includes('destination') || message.includes('place')) return getRandomResponse('destination');
+    if (message.includes('coupon') || message.includes('discount') || message.includes('offer')) return getRandomResponse('coupon');
+    return getRandomResponse('default');
+}
+
+function addQuickReplies(userMessage) {
+    userMessage = userMessage.toLowerCase();
+    let replies = [];
+    if (userMessage.includes('book') || userMessage.includes('destination')) {
+        replies = ['How to book?', 'Best summer spots?', 'Any coupons?'];
+    } else if (userMessage.includes('coupon')) {
+        replies = ['Current offers', 'How to apply?', 'Group discounts'];
+    } else {
+        replies = ['Book a trip', 'Suggest a destination', 'Show offers'];
+    }
+
+    const quickRepliesContainer = document.createElement('div');
+    quickRepliesContainer.className = 'quick-replies';
+    replies.forEach(reply => {
+        const button = document.createElement('div');
+        button.className = 'quick-reply';
+        button.textContent = reply;
+        button.addEventListener('click', () => {
+            chatInput.value = reply;
+            handleUserMessage();
+        });
+        quickRepliesContainer.appendChild(button);
+    });
+    chatMessages.appendChild(quickRepliesContainer);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function addMessage(message, isUser = false) {
+    const messageElement = document.createElement('div');
+    messageElement.className = `message ${isUser ? 'user-message' : 'ai-message'}`;
+    messageElement.textContent = message;
+    chatMessages.appendChild(messageElement);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function handleUserMessage() {
+    const message = chatInput.value.trim();
+    if (message) {
+        addMessage(message, true);
+        chatInput.value = '';
+
+        const typingIndicator = document.createElement('div');
+        typingIndicator.className = 'typing-indicator';
+        typingIndicator.innerHTML = `<div class="message ai-message"><div class="typing-dots"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div></div>`;
+        chatMessages.appendChild(typingIndicator);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+
+        setTimeout(() => {
+            typingIndicator.remove();
+            const response = getBotResponse(message);
+            addMessage(response);
+            addQuickReplies(message);
+        }, 1500);
+    }
+}
+            // --- BOOKING PAGE FUNCTIONALITY ---
+            function setupBookingForm() {
+                const durationButtons = document.querySelectorAll('.duration-btn');
+                const durationInput = document.getElementById('duration');
+                const startDateInput = document.getElementById('start-date');
+                const endDateInput = document.getElementById('end-date');
+                durationButtons.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        durationButtons.forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                        durationInput.value = btn.getAttribute('data-days');
+                        calculateEndDate();
+                    });
+                });
+                function calculateEndDate() {
+                    if (startDateInput.value) {
+                        const startDate = new Date(startDateInput.value);
+                        const duration = parseInt(durationInput.value);
+                        const endDate = new Date(startDate);
+                        endDate.setDate(startDate.getDate() + duration);
+                        endDateInput.value = endDate.toISOString().split('T')[0];
+                    }
+                }
+                startDateInput.addEventListener('change', calculateEndDate);
+                tripForm.addEventListener('submit', (e) => { e.preventDefault(); showToast('Booking details saved!'); });
+                startDateInput.min = new Date().toISOString().split('T')[0];
+            }
+
+            // --- Event Listeners Setup ---
             signupForm.addEventListener('submit', function(e) {
                 e.preventDefault();
-                const firstName = document.getElementById('signup-fname').value.trim();
-                const lastName = document.getElementById('signup-lname').value.trim();
-                const email = document.getElementById('signup-email').value.trim();
-                const password = document.getElementById('signup-password').value.trim();
-                const gender = document.getElementById('signup-gender').value;
-                const dob = document.getElementById('signup-dob').value.trim();
-                const mobile = document.getElementById('signup-mobile').value.trim();
-
-                if (!firstName || !lastName || !email || !password || !gender || !dob || !mobile) {
-                    showToast('Please fill out all required fields.', false);
-                    return;
-                }
-                if (mobile.length !== 10 || !/^\d{10}$/.test(mobile)) {
-                    showToast('Please enter a valid 10-digit mobile number.', false);
-                    return;
-                }
-                sessionStorage.setItem('userFirstName', firstName);
-                sessionStorage.setItem('userLName', lastName);
-                sessionStorage.setItem('userEmail', email);
-                sessionStorage.setItem('userPassword', password);
-                sessionStorage.setItem('userGender', gender);
-                sessionStorage.setItem('userDOB', dob);
-                sessionStorage.setItem('userMobile', mobile); // Save mobile number
-                showPage('login');
-                showToast('Your signup was successful! Please log in.');
+                // ... (Validation logic can be added here)
+                sessionStorage.setItem('userFirstName', document.getElementById('signup-fname').value);
+                sessionStorage.setItem('userEmail', document.getElementById('signup-email').value);
+                sessionStorage.setItem('userPassword', document.getElementById('signup-password').value);
+                showPage('login-page');
+                showToast('Signup successful! Please log in.');
             });
 
             loginForm.addEventListener('submit', function(e) {
                 e.preventDefault();
-                const enteredEmail = document.getElementById('login-email').value.trim();
-                const enteredPassword = document.getElementById('login-password').value.trim();
-                const storedEmail = sessionStorage.getItem('userEmail');
-                const storedPassword = sessionStorage.getItem('userPassword');
-                if (enteredEmail === storedEmail && enteredPassword === storedPassword) {
+                const enteredEmail = document.getElementById('login-email').value;
+                const enteredPassword = document.getElementById('login-password').value;
+                if (enteredEmail === sessionStorage.getItem('userEmail') && enteredPassword === sessionStorage.getItem('userPassword')) {
                     sessionStorage.setItem('isLoggedIn', 'true');
-                    showPage('home');
+                    showPage('home-page');
                     updateLoginStateUI();
+                    showToast('Login successful!');
                 } else {
                     showToast('Invalid email or password.', false);
                 }
             });
 
-            // --- Original & Other Page Functionality ---
-
-            updateLoginStateUI();
-
-            navLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    showPage(this.getAttribute('data-target'));
-                });
-            });
-            
-            loginBtn.addEventListener('click', () => showPage('login'));
-            showSignupLink.addEventListener('click', (e) => { e.preventDefault(); showPage('signup'); });
-            showLoginLink.addEventListener('click', (e) => { e.preventDefault(); showPage('login'); });
-
-            const searchInput = document.querySelector('.search-bar input');
-            const searchResults = document.getElementById('searchResults');
-            searchInput.addEventListener('focus', () => searchResults.style.display = 'block');
-            document.addEventListener('click', (e) => {
-                if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
-                    searchResults.style.display = 'none';
+            supportCards.forEach(card => card.addEventListener('click', function() { showSupportContent(this.getAttribute('data-support')); }));
+            supportOptions.forEach(option => option.addEventListener('click', function(e) { e.preventDefault(); showPage('support-page'); showSupportContent(this.getAttribute('data-support')); }));
+            if (feedbackForm) feedbackForm.addEventListener('submit', (e) => { e.preventDefault(); showToast('Thank you for your feedback!'); feedbackForm.reset(); });
+            navLinks.forEach(link => link.addEventListener('click', (e) => { e.preventDefault(); showPage(link.getAttribute('data-page')); }));
+            loginBtn.addEventListener('click', function() {
+                if (sessionStorage.getItem('isLoggedIn')) {
+                    sessionStorage.removeItem('isLoggedIn');
+                    updateLoginStateUI();
+                    showToast('You have been logged out.');
+                } else {
+                    showPage('login-page');
                 }
             });
             
-            const animateElements = document.querySelectorAll('.feature, .feature-card, .contact-method');
-            function checkScroll() {
-                animateElements.forEach(element => {
-                    const elementPosition = element.getBoundingClientRect().top;
-                    const screenPosition = window.innerHeight / 1.3;
-                    if (elementPosition < screenPosition) {
-                        element.classList.add('animated');
-                    }
-                });
-            }
-            window.addEventListener('scroll', checkScroll);
-            checkScroll();
-
-            // --- Coupon Card Script ---
-    document.querySelectorAll('.coupon-wrapper').forEach(card => {
+            showSignupLink.addEventListener('click', (e) => { e.preventDefault(); showPage('signup-page'); });
+            showLoginLink.addEventListener('click', (e) => { e.preventDefault(); showPage('login-page'); });
+            searchInput.addEventListener('input', () => showSearchSuggestions(searchInput.value));
+            document.addEventListener('click', (e) => { if (!searchInput.contains(e.target)) searchSuggestions.classList.remove('active'); });
+            chatButton.addEventListener('click', () => chatContainer.classList.toggle('active'));
+            closeChat.addEventListener('click', () => chatContainer.classList.remove('active'));
+            sendMessage.addEventListener('click', handleUserMessage);
+            chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleUserMessage(); });
+            document.querySelectorAll('.coupon-wrapper').forEach(card => {
                 card.addEventListener('mousemove', e => {
                     const rect = card.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const y = e.clientY - rect.top;
-                    card.style.setProperty('--mouse-x', `${x}px`);
-                    card.style.setProperty('--mouse-y', `${y}px`);
+                    card.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
+                    card.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
                 });
             });
+            backToHomeButton.addEventListener('click', () => showPage('home-page'));
+            
+            // --- Initializations ---
+            updateLoginStateUI();
+            setupFAQ();
+            setupRatingStars();
+            setupBookingForm();
         });
     </script>
-</body>
+</body>  
 </html>
